@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { strapiLogin, strapiRegister } from '@/lib/strapi'
 
 interface User {
   id: string
@@ -24,9 +25,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check for existing session
     const storedUser = localStorage.getItem('beleza_user')
-    if (storedUser) {
+    const storedJwt = localStorage.getItem('beleza_jwt')
+    if (storedUser && storedJwt) {
       setUser(JSON.parse(storedUser))
     }
     setIsLoading(false)
@@ -35,17 +36,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call - replace with Strapi auth
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      const mockUser: User = {
-        id: '1',
-        name: email.split('@')[0],
-        email,
+      const data = await strapiLogin(email, password)
+
+      const userData: User = {
+        id: String((data.user as any).id),
+        name: (data.user as any).username ?? email.split('@')[0],
+        email: (data.user as any).email,
       }
-      
-      setUser(mockUser)
-      localStorage.setItem('beleza_user', JSON.stringify(mockUser))
+
+      setUser(userData)
+      localStorage.setItem('beleza_user', JSON.stringify(userData))
+      localStorage.setItem('beleza_jwt', data.jwt)
     } finally {
       setIsLoading(false)
     }
@@ -54,17 +55,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call - replace with Strapi registration
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      const mockUser: User = {
-        id: '1',
-        name,
-        email,
+      const data = await strapiRegister(name, email, password)
+
+      const userData: User = {
+        id: String((data.user as any).id),
+        name: (data.user as any).username ?? name,
+        email: (data.user as any).email,
       }
-      
-      setUser(mockUser)
-      localStorage.setItem('beleza_user', JSON.stringify(mockUser))
+
+      setUser(userData)
+      localStorage.setItem('beleza_user', JSON.stringify(userData))
+      localStorage.setItem('beleza_jwt', data.jwt)
     } finally {
       setIsLoading(false)
     }
@@ -73,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null)
     localStorage.removeItem('beleza_user')
+    localStorage.removeItem('beleza_jwt')
   }
 
   return (

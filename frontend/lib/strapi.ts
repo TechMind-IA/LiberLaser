@@ -13,15 +13,23 @@ interface StrapiResponse<T> {
   }
 }
 
+function getUserJwt(): string | null {
+  if (typeof window === 'undefined') return null
+  return localStorage.getItem('beleza_jwt')
+}
+
 async function fetchStrapi<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   const url = `${STRAPI_URL}/api${endpoint}`
-  
+
+  // Prioridade: JWT do usuário logado > API token de servidor
+  const token = getUserJwt() || STRAPI_TOKEN
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    ...(STRAPI_TOKEN && { Authorization: `Bearer ${STRAPI_TOKEN}` }),
+    ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   }
 
@@ -31,13 +39,17 @@ async function fetchStrapi<T>(
   })
 
   if (!response.ok) {
-    throw new Error(`Strapi error: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(
+      errorData?.error?.message || `Strapi error: ${response.statusText}`
+    )
   }
 
   return response.json()
 }
 
-// Course types
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 export interface Course {
   id: string
   attributes: {
@@ -59,6 +71,7 @@ export interface Course {
     }
     createdAt: string
     updatedAt: string
+    publishedAt: string
   }
 }
 
@@ -102,15 +115,31 @@ export interface Material {
   }
 }
 
-// API functions
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+export function getThumbnailUrl(course: Course): string {
+  const url = course.attributes.thumbnail?.data?.attributes?.url
+  if (!url) return 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&h=600&fit=crop'
+  if (url.startsWith('http')) return url
+  return `${STRAPI_URL}${url}`
+}
+
+export function getFileUrl(material: Material): string {
+  const url = material.attributes.file?.data?.attributes?.url
+  if (!url) return '#'
+  if (url.startsWith('http')) return url
+  return `${STRAPI_URL}${url}`
+}
+
+// ─── API Functions ────────────────────────────────────────────────────────────
+
 export async function getCourses(): Promise<Course[]> {
   try {
     const response = await fetchStrapi<StrapiResponse<Course[]>>(
-      '/courses?populate[thumbnail]=*&populate[modules][populate][lessons]=*'
+      '/courses?populate[thumbnail]=*&populate[modules][populate][lessons]=*&sort=createdAt:desc'
     )
     return response.data
   } catch {
-    // Return mock data for development
     return mockCourses
   }
 }
@@ -118,11 +147,10 @@ export async function getCourses(): Promise<Course[]> {
 export async function getCourse(slug: string): Promise<Course | null> {
   try {
     const response = await fetchStrapi<StrapiResponse<Course[]>>(
-      `/courses?filters[slug][$eq]=${slug}&populate[thumbnail]=*&populate[modules][populate][lessons][populate][materials]=*`
+      `/courses?filters[slug][$eq]=${slug}&populate[thumbnail]=*&populate[modules][populate][lessons][populate][materials][populate][file]=*`
     )
     return response.data[0] || null
   } catch {
-    // Return mock data for development
     return mockCourses.find(c => c.attributes.slug === slug) || null
   }
 }
@@ -134,19 +162,18 @@ export async function getLesson(courseSlug: string, lessonId: string): Promise<L
     )
     return response.data
   } catch {
-    // Return mock lesson
     const course = mockCourses.find(c => c.attributes.slug === courseSlug)
     if (!course) return null
-    
-    for (const module of course.attributes.modules.data) {
-      const lesson = module.attributes.lessons.data.find(l => l.id === lessonId)
+    for (const mod of course.attributes.modules.data) {
+      const lesson = mod.attributes.lessons.data.find(l => l.id === lessonId)
       if (lesson) return lesson
     }
     return null
   }
 }
 
-// Auth functions
+// ─── Auth Functions ───────────────────────────────────────────────────────────
+
 export async function strapiLogin(email: string, password: string) {
   const response = await fetchStrapi<{ jwt: string; user: unknown }>('/auth/local', {
     method: 'POST',
@@ -163,7 +190,19 @@ export async function strapiRegister(username: string, email: string, password: 
   return response
 }
 
-// Mock data for development
+export async function strapiGetMe(jwt: string) {
+  const response = await fetch(`${STRAPI_URL}/api/users/me`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+  if (!response.ok) throw new Error('Token inválido ou expirado')
+  return response.json()
+}
+
+// ─── Mock Data ────────────────────────────────────────────────────────────────
+
 const mockCourses: Course[] = [
   {
     id: '1',
@@ -174,9 +213,9 @@ const mockCourses: Course[] = [
       thumbnail: {
         data: {
           attributes: {
-            url: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&h=600&fit=crop'
-          }
-        }
+            url: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&h=600&fit=crop',
+          },
+        },
       },
       duration: '8 horas',
       level: 'iniciante',
@@ -195,44 +234,44 @@ const mockCourses: Course[] = [
                     id: 'l1',
                     attributes: {
                       title: 'Bem-vindo ao curso',
-                      description: 'Introdução ao curso de limpeza de pele',
+                      description: 'Nesta aula inicial, você conhecerá a estrutura do curso e os objetivos de aprendizado.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                       duration: '10:00',
                       order: 1,
-                      materials: { data: [] }
-                    }
+                      materials: { data: [] },
+                    },
                   },
                   {
                     id: 'l2',
                     attributes: {
                       title: 'Anatomia da Pele',
-                      description: 'Entendendo a estrutura da pele',
+                      description: 'Entenda a estrutura da pele humana, suas camadas e funções.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                       duration: '25:00',
                       order: 2,
-                      materials: { data: [] }
-                    }
+                      materials: { data: [] },
+                    },
                   },
                   {
                     id: 'l3',
                     attributes: {
                       title: 'Tipos de Pele',
-                      description: 'Identificando os diferentes tipos de pele',
+                      description: 'Aprenda a identificar os diferentes tipos de pele e suas características.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                       duration: '20:00',
                       order: 3,
-                      materials: { data: [] }
-                    }
-                  }
-                ]
-              }
-            }
+                      materials: { data: [] },
+                    },
+                  },
+                ],
+              },
+            },
           },
           {
             id: 'm2',
             attributes: {
               title: 'Técnicas de Limpeza',
-              description: 'Procedimentos práticos',
+              description: 'Protocolos e procedimentos práticos',
               order: 2,
               lessons: {
                 data: [
@@ -240,140 +279,106 @@ const mockCourses: Course[] = [
                     id: 'l4',
                     attributes: {
                       title: 'Preparação do Ambiente',
-                      description: 'Como preparar seu espaço de trabalho',
+                      description: 'Como preparar seu espaço de trabalho de forma profissional.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                       duration: '15:00',
                       order: 1,
-                      materials: { data: [] }
-                    }
+                      materials: { data: [] },
+                    },
                   },
                   {
                     id: 'l5',
                     attributes: {
-                      title: 'Higienização',
-                      description: 'Passo a passo da higienização',
+                      title: 'Protocolo de Limpeza Profunda',
+                      description: 'Passo a passo do protocolo completo de limpeza profunda.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-                      duration: '30:00',
+                      duration: '40:00',
                       order: 2,
-                      materials: { data: [] }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+                      materials: { data: [] },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
       createdAt: '2024-01-15',
-      updatedAt: '2024-01-15'
-    }
+      updatedAt: '2024-01-15',
+      publishedAt: '2024-01-15',
+    },
   },
   {
     id: '2',
     attributes: {
-      title: 'Design de Sobrancelhas',
-      slug: 'design-de-sobrancelhas',
-      description: 'Domine a arte do design de sobrancelhas com técnicas avançadas de visagismo e aplicação.',
+      title: 'Massagem Facial Modeladora',
+      slug: 'massagem-facial-modeladora',
+      description: 'Domine as técnicas de massagem facial que rejuvenescem e modelam o rosto, combinando métodos orientais e ocidentais.',
       thumbnail: {
         data: {
           attributes: {
-            url: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&h=600&fit=crop'
-          }
-        }
+            url: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&h=600&fit=crop',
+          },
+        },
       },
       duration: '6 horas',
       level: 'intermediario',
-      instructor: 'Maria Oliveira',
+      instructor: 'Carla Mendes',
       modules: {
         data: [
           {
             id: 'm3',
             attributes: {
-              title: 'Visagismo Facial',
-              description: 'Estudo do formato do rosto',
+              title: 'Fundamentos da Massagem Facial',
+              description: 'Base teórica e técnicas introdutórias',
               order: 1,
               lessons: {
                 data: [
                   {
                     id: 'l6',
                     attributes: {
-                      title: 'Introdução ao Visagismo',
-                      description: 'Conceitos fundamentais',
+                      title: 'Introdução às técnicas orientais',
+                      description: 'Conheça as bases da massagem shiatsu e kobido aplicadas ao rosto.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-                      duration: '20:00',
+                      duration: '30:00',
                       order: 1,
-                      materials: { data: [] }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+                      materials: { data: [] },
+                    },
+                  },
+                  {
+                    id: 'l7',
+                    attributes: {
+                      title: 'Mapeamento dos pontos faciais',
+                      description: 'Identifique os principais pontos de pressão e drenagem do rosto.',
+                      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                      duration: '25:00',
+                      order: 2,
+                      materials: { data: [] },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
       createdAt: '2024-02-01',
-      updatedAt: '2024-02-01'
-    }
+      updatedAt: '2024-02-01',
+      publishedAt: '2024-02-01',
+    },
   },
   {
     id: '3',
     attributes: {
-      title: 'Massagem Facial Rejuvenescedora',
-      slug: 'massagem-facial-rejuvenescedora',
-      description: 'Técnicas de massagem facial para rejuvenescimento e relaxamento, incluindo drenagem linfática.',
+      title: 'Micropigmentação Avançada',
+      slug: 'micropigmentacao-avancada',
+      description: 'Técnicas avançadas de micropigmentação para sobrancelhas, lábios e hairline com os melhores pigmentos do mercado.',
       thumbnail: {
         data: {
           attributes: {
-            url: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&h=600&fit=crop'
-          }
-        }
-      },
-      duration: '10 horas',
-      level: 'avancado',
-      instructor: 'Dr. Carlos Santos',
-      modules: {
-        data: [
-          {
-            id: 'm4',
-            attributes: {
-              title: 'Anatomia Facial',
-              description: 'Músculos e estruturas faciais',
-              order: 1,
-              lessons: {
-                data: [
-                  {
-                    id: 'l7',
-                    attributes: {
-                      title: 'Músculos da Face',
-                      description: 'Estudo detalhado da musculatura',
-                      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-                      duration: '35:00',
-                      order: 1,
-                      materials: { data: [] }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      createdAt: '2024-02-15',
-      updatedAt: '2024-02-15'
-    }
-  },
-  {
-    id: '4',
-    attributes: {
-      title: 'Micropigmentação Labial',
-      slug: 'micropigmentacao-labial',
-      description: 'Curso completo de micropigmentação labial com técnicas modernas e seguras.',
-      thumbnail: {
-        data: {
-          attributes: {
-            url: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=800&h=600&fit=crop'
-          }
-        }
+            url: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=800&h=600&fit=crop',
+          },
+        },
       },
       duration: '12 horas',
       level: 'avancado',
@@ -383,30 +388,31 @@ const mockCourses: Course[] = [
           {
             id: 'm5',
             attributes: {
-              title: 'Introdução à Micropigmentação',
-              description: 'Fundamentos e biossegurança',
+              title: 'Biossegurança e Regulamentação',
+              description: 'Normas obrigatórias para a prática segura',
               order: 1,
               lessons: {
                 data: [
                   {
                     id: 'l8',
                     attributes: {
-                      title: 'Biossegurança',
-                      description: 'Normas e procedimentos de segurança',
+                      title: 'Normas de Biossegurança',
+                      description: 'Protocolos de esterilização, EPI e descarte de materiais.',
                       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                       duration: '45:00',
                       order: 1,
-                      materials: { data: [] }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+                      materials: { data: [] },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
       createdAt: '2024-03-01',
-      updatedAt: '2024-03-01'
-    }
-  }
+      updatedAt: '2024-03-01',
+      publishedAt: '2024-03-01',
+    },
+  },
 ]
