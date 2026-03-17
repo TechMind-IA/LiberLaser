@@ -1,10 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const config = [
+exports.default = [
     'strapi::logger',
     'strapi::errors',
-    'strapi::security',
-    'strapi::cors',
+    {
+        name: 'strapi::security',
+        config: {
+            contentSecurityPolicy: {
+                useDefaults: true,
+                directives: {
+                    'connect-src': ["'self'", 'https:'],
+                    'img-src': ["'self'", 'data:', 'blob:', '*'],
+                    'media-src': ["'self'", 'data:', 'blob:', '*'],
+                    upgradeInsecureRequests: null,
+                },
+            },
+        },
+    },
+    {
+        name: 'strapi::cors',
+        config: {
+            enabled: true,
+            headers: '*',
+            origin: [
+                'http://localhost:3000',
+                'http://localhost:3001',
+                'https://beleza-academy.vercel.app',
+            ],
+            methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+            credentials: true,
+        },
+    },
     'strapi::poweredBy',
     'strapi::query',
     'strapi::body',
@@ -12,4 +38,3 @@ const config = [
     'strapi::favicon',
     'strapi::public',
 ];
-exports.default = config;

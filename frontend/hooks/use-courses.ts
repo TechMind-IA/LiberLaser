@@ -9,14 +9,14 @@ export function useCourses() {
     getCourses,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 60000, // 1 minute
+      dedupingInterval: 60000,
     }
   )
 
   return {
     courses: data || [],
     isLoading,
-    isError: error,
+    isError: !!error,
     mutate,
   }
 }
@@ -32,9 +32,9 @@ export function useCourse(slug: string) {
   )
 
   return {
-    course: data,
+    course: data ?? null,
     isLoading,
-    isError: error,
+    isError: !!error,
     mutate,
   }
 }

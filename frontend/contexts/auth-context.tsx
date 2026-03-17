@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { strapiLogin, strapiRegister } from '@/lib/strapi'
+import { strapiLogin, strapiRegister, strapiGetMe } from '@/lib/strapi'
 
 interface User {
   id: string
@@ -27,21 +27,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedUser = localStorage.getItem('beleza_user')
     const storedJwt = localStorage.getItem('beleza_jwt')
+
     if (storedUser && storedJwt) {
-      setUser(JSON.parse(storedUser))
+      // Valida o token ainda está válido
+      strapiGetMe(storedJwt)
+        .then(() => setUser(JSON.parse(storedUser)))
+        .catch(() => {
+          // Token expirado — limpa sessão
+          localStorage.removeItem('beleza_user')
+          localStorage.removeItem('beleza_jwt')
+        })
+        .finally(() => setIsLoading(false))
+    } else {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }, [])
 
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
       const data = await strapiLogin(email, password)
+      const strapiUser = data.user as any
 
       const userData: User = {
-        id: String((data.user as any).id),
-        name: (data.user as any).username ?? email.split('@')[0],
-        email: (data.user as any).email,
+        id: String(strapiUser.id),
+        name: strapiUser.username ?? email.split('@')[0],
+        email: strapiUser.email,
       }
 
       setUser(userData)
@@ -55,12 +66,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true)
     try {
-      const data = await strapiRegister(name, email, password)
+      // Sanitiza o username: remove espaços e caracteres especiais
+      const username = name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // remove acentos
+        .replace(/[^a-z0-9]/g, '')       // só letras e números
+        .slice(0, 30)                     // máximo 30 chars
+        || `user${Date.now()}`            // fallback se ficar vazio
+
+      const data = await strapiRegister(username, email, password)
+      const strapiUser = data.user as any
 
       const userData: User = {
-        id: String((data.user as any).id),
-        name: (data.user as any).username ?? name,
-        email: (data.user as any).email,
+        id: String(strapiUser.id),
+        name: name, // mantém nome original para exibição
+        email: strapiUser.email,
       }
 
       setUser(userData)
