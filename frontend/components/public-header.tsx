@@ -1,118 +1,126 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-export function PublicHeader() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export default function PublicHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-serif font-bold tracking-tight text-foreground">
-              Beleza<span className="text-primary">Academy</span>
-            </span>
-          </Link>
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center transition-all duration-400"
+      style={{
+        padding: scrolled ? "0.9rem 4rem" : "1.25rem 4rem",
+        background: scrolled ? "rgba(13,13,13,0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: scrolled ? "0.5px solid rgba(201,165,90,0.2)" : "none",
+      }}
+    >
+      <Link
+        href="/"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: "1.4rem",
+          fontWeight: 400,
+          letterSpacing: "0.12em",
+          color: "#C9A55A",
+          textDecoration: "none",
+          textTransform: "uppercase",
+        }}
+      >
+        Liber <em style={{ fontStyle: "italic", fontWeight: 300 }}>Laser</em>
+      </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            <Link 
-              href="#cursos" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+      <ul className="hidden md:flex gap-10 list-none">
+        {[
+          { label: "Sobre", href: "#sobre" },
+          { label: "Serviços", href: "#servicos" },
+          { label: "Planos", href: "#planos" },
+          { label: "FAQ", href: "#faq" },
+        ].map((item) => (
+          <li key={item.href}>
+            <a
+              href={item.href}
+              className="transition-colors duration-300 hover:text-yellow-400"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: "0.78rem",
+                fontWeight: 500,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "rgba(245,240,232,0.6)",
+                textDecoration: "none",
+              }}
             >
-              Cursos
-            </Link>
-            <Link 
-              href="#beneficios" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Benefícios
-            </Link>
-            <Link 
-              href="#sobre" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Sobre
-            </Link>
-            <Link 
-              href="#contato" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Contato
-            </Link>
-          </div>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
 
-          {/* Auth Button */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/login">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Entrar
-              </Button>
-            </Link>
-          </div>
+      <div className="flex items-center gap-3">
+        {/* Área restrita */}
+        <Link
+          href="/login"
+          className="transition-all duration-300"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: "0.78rem",
+            fontWeight: 500,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(245,240,232,0.6)",
+            border: "0.5px solid rgba(245,240,232,0.15)",
+            padding: "0.6rem 1.4rem",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            transition: "all 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,165,90,0.5)";
+            (e.currentTarget as HTMLAnchorElement).style.color = "#C9A55A";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(245,240,232,0.15)";
+            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(245,240,232,0.6)";
+          }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Área do Aluno
+        </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6 text-foreground" />
-            ) : (
-              <Menu className="h-6 w-6 text-foreground" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
-              <Link 
-                href="#cursos" 
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Cursos
-              </Link>
-              <Link 
-                href="#beneficios" 
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Benefícios
-              </Link>
-              <Link 
-                href="#sobre" 
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sobre
-              </Link>
-              <Link 
-                href="#contato" 
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contato
-              </Link>
-              <div className="pt-4 border-t border-border">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-primary text-primary-foreground">
-                    Entrar
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </nav>
-    </header>
-  )
+        {/* WhatsApp CTA */}
+        <a
+          href="https://wa.me/55"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-all duration-300 hover:-translate-y-px"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: "0.78rem",
+            fontWeight: 500,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "#0D0D0D",
+            background: "#C9A55A",
+            padding: "0.6rem 1.6rem",
+            textDecoration: "none",
+          }}
+        >
+          Falar no WhatsApp
+        </a>
+      </div>
+    </nav>
+  );
 }

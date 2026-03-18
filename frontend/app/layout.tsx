@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '@/contexts/auth-context'
+import { Cormorant_Garamond, Outfit } from "next/font/google"
 import './globals.css'
 
 const playfair = Playfair_Display({ 

@@ -1,98 +1,126 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Play, Star, Users, Award } from 'lucide-react'
+"use client";
 
-export function HeroSection() {
+export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
-              <Star className="h-4 w-4 fill-current" />
-              <span className="text-sm font-medium">Plataforma #1 em Estética</span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-foreground leading-tight text-balance">
-              Transforme sua carreira na{' '}
-              <span className="text-primary">estética</span>
-            </h1>
-            
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 text-pretty">
-              Aprenda com os melhores profissionais do mercado. Cursos completos, 
-              certificados reconhecidos e suporte exclusivo para impulsionar sua carreira.
-            </p>
-            
-            <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              <Link href="/cadastro">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 h-12 text-base">
-                  Começar Gratuitamente
-                </Button>
-              </Link>
-              <Link href="#cursos">
-                <Button size="lg" variant="outline" className="px-8 h-12 text-base border-border hover:bg-secondary">
-                  <Play className="mr-2 h-4 w-4" />
-                  Ver Cursos
-                </Button>
-              </Link>
-            </div>
+    <section
+      id="hero"
+      className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-8"
+      style={{ background: "#0D0D0D" }}
+    >
+      {/* Radial glow background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,165,90,.07) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 20%, rgba(201,165,90,.05) 0%, transparent 60%)",
+        }}
+      />
+      {/* Decorative rings */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[700, 1100].map((size) => (
+          <div
+            key={size}
+            className="absolute rounded-full"
+            style={{
+              width: size,
+              height: size,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              border: "0.5px solid rgba(201,165,90,.08)",
+            }}
+          />
+        ))}
+      </div>
 
-            {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-8">
-              <div className="text-center lg:text-left">
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-primary">
-                  <Users className="h-5 w-5" />
-                  <span className="text-2xl font-bold">5.000+</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">Alunos ativos</p>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-primary">
-                  <Award className="h-5 w-5" />
-                  <span className="text-2xl font-bold">50+</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">Cursos disponíveis</p>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-primary">
-                  <Star className="h-5 w-5 fill-current" />
-                  <span className="text-2xl font-bold">4.9</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">Avaliação média</p>
-              </div>
-            </div>
-          </div>
+      {/* Content */}
+      <p
+        className="text-xs font-medium tracking-widest uppercase mb-8 animate-fade-up"
+        style={{ color: "#C9A55A", letterSpacing: "0.32em" }}
+      >
+        Locação · Educação · Tecnologia
+      </p>
 
-          {/* Image */}
-          <div className="relative">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=800&h=1000&fit=crop"
-                alt="Profissional de estética realizando procedimento"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
-            </div>
-            
-            {/* Floating Card */}
-            <div className="absolute -bottom-6 -left-6 bg-card p-4 rounded-xl shadow-lg border border-border">
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Award className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-card-foreground">Certificado</p>
-                  <p className="text-sm text-muted-foreground">Reconhecido nacionalmente</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <h1
+        className="font-serif text-white leading-none animate-fade-up"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: "clamp(3.5rem, 8vw, 7rem)",
+          fontWeight: 300,
+          animationDelay: "0.2s",
+        }}
+      >
+        Liber
+        <br />
+        <em style={{ color: "#C9A55A" }}>Laser Academy</em>
+      </h1>
+
+      <p
+        className="text-xs font-medium uppercase tracking-widest mt-6 animate-fade-up"
+        style={{
+          color: "rgba(245,240,232,.4)",
+          letterSpacing: "0.3em",
+          animationDelay: "0.4s",
+        }}
+      >
+        Transformando tecnologia em faturamento real
+      </p>
+
+      <p
+        className="mt-10 text-base font-light max-w-md leading-relaxed animate-fade-up"
+        style={{
+          color: "rgba(245,240,232,.55)",
+          animationDelay: "0.6s",
+          fontFamily: "'Outfit', sans-serif",
+        }}
+      >
+        Alugamos equipamentos de laser e formamos profissionais para que cada
+        sessão seja convertida em resultado financeiro de verdade.
+      </p>
+
+      <div
+        className="mt-12 flex gap-5 items-center animate-fade-up"
+        style={{ animationDelay: "0.8s" }}
+      >
+        <a
+          href="#planos"
+          className="text-xs font-medium uppercase tracking-wider px-10 py-4 transition-all duration-300 hover:-translate-y-0.5"
+          style={{
+            letterSpacing: "0.14em",
+            background: "#C9A55A",
+            color: "#0D0D0D",
+          }}
+        >
+          Ver os Planos
+        </a>
+        <a
+          href="#sobre"
+          className="text-xs font-medium uppercase tracking-wider px-10 py-4 transition-all duration-300"
+          style={{
+            letterSpacing: "0.14em",
+            color: "rgba(245,240,232,.6)",
+            border: "0.5px solid rgba(245,240,232,.2)",
+          }}
+        >
+          Conheça a Liber
+        </a>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+        <span
+          className="text-xs uppercase tracking-widest"
+          style={{ color: "rgba(245,240,232,.3)", letterSpacing: "0.24em" }}
+        >
+          Explore
+        </span>
+        <div
+          className="w-px h-10"
+          style={{
+            background: "linear-gradient(to bottom, rgba(201,165,90,.5), transparent)",
+          }}
+        />
       </div>
     </section>
-  )
+  );
 }

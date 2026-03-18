@@ -1,59 +1,109 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, CheckCircle } from 'lucide-react'
-
-const features = [
-  'Acesso imediato a todos os cursos',
-  'Certificado incluso em cada curso',
-  'Suporte por 12 meses',
-  'Atualizações gratuitas'
-]
-
-export function CTASection() {
+export default function CtaSection() {
   return (
-    <section className="py-20 lg:py-32 bg-foreground relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent" />
-      </div>
+    <section
+      id="cta"
+      className="relative text-center overflow-hidden"
+      style={{ padding: "10rem 0", background: "#1A1A1A" }}
+    >
+      {/* Radial glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 600, height: 600,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(201,165,90,0.06) 0%, transparent 70%)",
+        }}
+      />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-background leading-tight text-balance">
-            Pronta para transformar sua carreira na estética?
-          </h2>
-          <p className="mt-6 text-lg text-background/70 text-pretty">
-            Junte-se a milhares de profissionais que já estão se destacando no mercado 
-            com nossos cursos especializados.
-          </p>
+      <div className="relative max-w-6xl mx-auto px-10">
+        <span
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: "4rem",
+            color: "rgba(201,165,90,0.12)",
+            marginBottom: "2rem",
+            display: "block",
+            fontStyle: "italic",
+          }}
+        >
+          Liber
+        </span>
 
-          {/* Features */}
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 px-4 py-2 bg-background/10 rounded-full"
-              >
-                <CheckCircle className="h-4 w-4 text-primary" />
-                <span className="text-sm text-background">{feature}</span>
-              </div>
-            ))}
-          </div>
+        <h2
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: "clamp(2.4rem, 5vw, 4rem)",
+            fontWeight: 300,
+            color: "#FFFFFF",
+            lineHeight: 1.15,
+            marginBottom: "1.5rem",
+          }}
+        >
+          Pronta para transformar<br />
+          tecnologia em{" "}
+          <em style={{ fontStyle: "italic", color: "#C9A55A" }}>faturamento?</em>
+        </h2>
 
-          {/* CTA Button */}
-          <div className="mt-10">
-            <Link href="/login">
-              <Button 
-                size="lg" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 h-14 text-base"
-              >
-                Aceder à plataforma
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
+        <p
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: "0.9rem",
+            fontWeight: 300,
+            color: "rgba(245,240,232,0.45)",
+            marginBottom: "3rem",
+            maxWidth: 420,
+            marginLeft: "auto",
+            marginRight: "auto",
+            lineHeight: 1.8,
+          }}
+        >
+          Fale com a nossa equipe agora mesmo e descubra qual plano é ideal para a sua clínica.
+        </p>
+
+        <div className="flex justify-center gap-5 flex-wrap">
+          <a
+            href="https://wa.me/5531988280047"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-all duration-300 hover:-translate-y-0.5"
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: "0.78rem",
+              fontWeight: 500,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#0D0D0D",
+              background: "#C9A55A",
+              padding: "0.9rem 2.4rem",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+          >
+            Quero começar agora
+          </a>
+          <a
+            href="#planos"
+            className="transition-all duration-300"
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: "0.78rem",
+              fontWeight: 500,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(245,240,232,0.6)",
+              background: "transparent",
+              padding: "0.9rem 2.4rem",
+              border: "0.5px solid rgba(245,240,232,0.2)",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+          >
+            Ver os planos
+          </a>
         </div>
       </div>
     </section>
-  )
+  );
 }

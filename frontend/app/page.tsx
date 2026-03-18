@@ -1,19 +1,27 @@
-import { PublicHeader } from '@/components/public-header'
-import { HeroSection } from '@/components/hero-section'
-import { BenefitsSection } from '@/components/benefits-section'
-import { CoursesSection } from '@/components/courses-section'
-import { CTASection } from '@/components/cta-section'
-import { Footer } from '@/components/footer'
+import PublicHeader from "@/components/public-header";
+import HeroSection from "@/components/hero-section";
+import SobreSection from "@/components/sobre-section";
+import ServicosSection from "@/components/servicos-section";
+import DiferencialSection from "@/components/diferencial-section";
+import ParaQuemSection from "@/components/paraquem-section";
+import PlanosSection from "@/components/planos-section";
+import FaqSection from "@/components/faq-section";
+import CtaSection from "@/components/cta-section";
+import Footer from "@/components/footer";
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main>
       <PublicHeader />
       <HeroSection />
-      <BenefitsSection />
-      <CoursesSection />
-      <CTASection />
+      <SobreSection />
+      <ServicosSection />
+      <DiferencialSection />
+      <ParaQuemSection />
+      <PlanosSection />
+      <FaqSection />
+      <CtaSection />
       <Footer />
     </main>
-  )
+  );
 }
