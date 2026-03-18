@@ -118,13 +118,6 @@ export default function LoginPage() {
               )}
             </Button>
           </form>
-
-          <p className="mt-8 text-center text-muted-foreground">
-            Ainda não tem uma conta?{' '}
-            <Link href="/cadastro" className="text-primary hover:underline font-medium">
-              Cadastre-se
-            </Link>
-          </p>
         </div>
       </div>
 

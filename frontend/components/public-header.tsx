@@ -47,16 +47,11 @@ export function PublicHeader() {
             </Link>
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Button */}
           <div className="hidden lg:flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" className="text-foreground hover:text-primary">
-                Entrar
-              </Button>
-            </Link>
-            <Link href="/cadastro">
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Começar Agora
+                Entrar
               </Button>
             </Link>
           </div>
@@ -107,15 +102,10 @@ export function PublicHeader() {
               >
                 Contato
               </Link>
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                <Link href="/login">
-                  <Button variant="ghost" className="w-full justify-center">
-                    Entrar
-                  </Button>
-                </Link>
-                <Link href="/cadastro">
+              <div className="pt-4 border-t border-border">
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full bg-primary text-primary-foreground">
-                    Começar Agora
+                    Entrar
                   </Button>
                 </Link>
               </div>
