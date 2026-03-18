@@ -20,6 +20,28 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
       },
     },
   },
+
+  'users-permissions': {
+    config: {
+      jwt: {
+        expiresIn: '7d',
+      },
+      resetPasswordUrl: `${env('FRONTEND_URL', 'http://localhost:3000')}/redefinir-senha?code=`,
+    },
+  },
+
+  email: {
+    config: {
+      provider: env('EMAIL_PROVIDER', 'sendgrid'),
+      providerOptions: {
+        apiKey: env('SENDGRID_API_KEY', ''),
+      },
+      settings: {
+        defaultFrom: env('EMAIL_FROM', 'noreply@belezaacademy.com'),
+        defaultReplyTo: env('EMAIL_REPLY_TO', 'noreply@belezaacademy.com'),
+      },
+    },
+  },
 });
 
 export default config;

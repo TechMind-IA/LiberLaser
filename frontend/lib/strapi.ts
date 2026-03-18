@@ -184,6 +184,24 @@ export async function strapiLogin(email: string, password: string) {
   return response
 }
 
+export async function strapiForgotPassword(email: string): Promise<void> {
+  await fetchStrapi('/auth/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  })
+}
+
+export async function strapiResetPassword(
+  code: string,
+  password: string,
+  passwordConfirmation: string
+): Promise<void> {
+  await fetchStrapi('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ code, password, passwordConfirmation }),
+  })
+}
+
 export async function strapiGetMe(jwt: string) {
   const response = await fetch(`${STRAPI_URL}/api/users/me`, {
     headers: {
