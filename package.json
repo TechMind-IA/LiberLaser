@@ -1,0 +1,11 @@
+{
+  "name": "liberlaser",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && pnpm dev",
+    "dev:backend": "cd backend && npm run develop"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
