@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+
 
 export default function PublicHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,19 +24,14 @@ export default function PublicHeader() {
         borderBottom: scrolled ? "0.5px solid rgba(201,165,90,0.2)" : "none",
       }}
     >
-      <Link
-        href="/"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontSize: "1.4rem",
-          fontWeight: 400,
-          letterSpacing: "0.12em",
-          color: "#C9A55A",
-          textDecoration: "none",
-          textTransform: "uppercase",
-        }}
-      >
-        Liber <em style={{ fontStyle: "italic", fontWeight: 300 }}>Laser</em>
+      <Link href="/">
+        <Image
+          src="/logo.png" 
+          alt="Liber Laser"
+          width={140}
+          height={48}
+          style={{ objectFit: "contain" }}
+        />
       </Link>
 
       <ul className="hidden md:flex gap-10 list-none">
