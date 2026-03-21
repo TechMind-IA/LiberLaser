@@ -166,7 +166,7 @@ export default function Home() {
                 href="https://wa.me/55"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-[var(--color-border)] text-secondary text-[0.72rem] font-semibold tracking-[0.16em] uppercase px-8 py-4 hover:border-accent hover:text-primary transition-all duration-300"
+                className="border border-(--color-border) text-secondary text-[0.72rem] font-semibold tracking-[0.16em] uppercase px-8 py-4 hover:border-accent hover:text-primary transition-all duration-300"
               >
                 Entre em contato
               </a>
@@ -220,7 +220,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
           {/* Decorativo */}
-          <div className="relative h-72 sm:h-96 bg-surface border border-[var(--color-border)] flex items-center justify-center overflow-hidden">
+          <div className="relative h-72 sm:h-96 bg-surface border border-(--color-border) flex items-center justify-center overflow-hidden">
             <span className="font-serif text-[7rem] sm:text-[10rem] font-bold text-accent/8 italic select-none absolute pointer-events-none">
               Liber
             </span>
@@ -303,11 +303,11 @@ export default function Home() {
             ].map((s) => (
               <div
                 key={s.num}
-                className="bg-bg border border-[var(--color-border)] p-8 sm:p-12 hover:border-accent/50 transition-colors duration-300 group"
+                className="bg-bg border border-(--color-border) p-8 sm:p-12 hover:border-accent/50 transition-colors duration-300 group"
               >
                 <p className="font-serif text-accent/60 text-sm font-semibold mb-8">{s.num}</p>
 
-                <div className="w-10 h-10 border border-[var(--color-border)] flex items-center justify-center mb-8 group-hover:border-accent/50 transition-colors duration-300">
+                <div className="w-10 h-10 border border-(--color-border) flex items-center justify-center mb-8 group-hover:border-accent/50 transition-colors duration-300">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.5">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M12 7v5l3 3" />
@@ -358,7 +358,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-px bg-[var(--color-border)]">
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-px bg-(--color-border)">
             {diferenciais.map((item) => (
               <div
                 key={item.num}
@@ -395,7 +395,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--color-border)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-(--color-border)">
             {paraQuem.map((text, i) => (
               <div
                 key={i}
@@ -436,7 +436,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--color-border)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-(--color-border)">
             {planos.map((p) => (
               <div
                 key={p.nome}
@@ -466,7 +466,7 @@ export default function Home() {
                   ou {p.preco12h} com 12h/mês
                 </p>
 
-                <div className="h-px bg-[var(--color-border)] mb-7" />
+                <div className="h-px bg-(--color-border) mb-7" />
 
                 <ul className="flex-1 space-y-3 mb-7">
                   {p.features.map((f) => (
@@ -531,7 +531,7 @@ export default function Home() {
           {/* Accordion */}
           <div className="lg:col-span-2">
             {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-[var(--color-border)]">
+              <div key={i} className="border-b border-(--color-border)">
                 <button
                   onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                   className="w-full flex items-center justify-between gap-8 py-6 text-left group"
@@ -545,7 +545,7 @@ export default function Home() {
                   </span>
                   <span
                     className={`w-7 h-7 shrink-0 rounded-full border flex items-center justify-center text-accent text-base transition-colors duration-200 ${
-                      faqOpen === i ? 'border-accent bg-accent/10' : 'border-[var(--color-border)]'
+                      faqOpen === i ? 'border-accent bg-accent/10' : 'border-(--color-border)'
                     }`}
                   >
                     {faqOpen === i ? '−' : '+'}

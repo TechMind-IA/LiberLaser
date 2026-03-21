@@ -32,7 +32,7 @@ export default function LoginPage() {
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-sans bg-bg">
 
       {/* ── Coluna esquerda: Formulário ── */}
-      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 py-10 sm:py-14 lg:border-r border-[var(--color-border)]">
+      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 py-10 sm:py-14 lg:border-r border-(--color-border)">
 
         {/* Wrapper com largura máxima centrado no mobile */}
         <div className="w-full max-w-md mx-auto">
@@ -90,7 +90,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 sm:h-13 px-4 bg-surface border border-[var(--color-border)] text-primary text-sm outline-none focus:border-accent transition-colors duration-200 placeholder:text-muted w-full"
+                className="h-12 sm:h-13 px-4 bg-surface border border-(--color-border) text-primary text-sm outline-none focus:border-accent transition-colors duration-200 placeholder:text-muted w-full"
               />
             </div>
 
@@ -118,7 +118,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full h-12 sm:h-13 px-4 pr-12 bg-surface border border-[var(--color-border)] text-primary text-sm outline-none focus:border-accent transition-colors duration-200 placeholder:text-muted"
+                  className="w-full h-12 sm:h-13 px-4 pr-12 bg-surface border border-(--color-border) text-primary text-sm outline-none focus:border-accent transition-colors duration-200 placeholder:text-muted"
                 />
                 <button
                   type="button"
@@ -184,7 +184,7 @@ export default function LoginPage() {
         />
 
         {/* Gradiente base */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/10 to-transparent" />
 
         {/* Borda interna decorativa */}
         <div className="absolute inset-4 border border-accent/20 pointer-events-none" />
