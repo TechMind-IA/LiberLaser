@@ -1,8 +1,6 @@
 "use client"
 
 import { Menu, Bell, Search } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 
 interface DashboardHeaderProps {
   onMenuClick: () => void
@@ -10,37 +8,131 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   return (
-    <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="flex items-center justify-between h-16 px-4 lg:px-8">
-        {/* Mobile Menu Button */}
+    <header
+      style={{
+        height: 64,
+        borderBottom: '1px solid rgba(201,165,90,.12)',
+        background: 'rgba(255,253,249,.97)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 2rem',
+        position: 'sticky',
+        top: 0,
+        zIndex: 30,
+        fontFamily: "'Jost', sans-serif",
+        gap: '1.5rem',
+      }}
+    >
+      {/* Mobile menu button */}
+      <button
+        onClick={onMenuClick}
+        className="lg:hidden"
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: '#8A6548',
+          display: 'flex',
+          alignItems: 'center',
+          padding: 4,
+          flexShrink: 0,
+          transition: 'color .2s',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A55A')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = '#8A6548')}
+      >
+        <Menu size={20} />
+      </button>
+
+      {/* Search */}
+      <div
+        style={{
+          flex: 1,
+          maxWidth: 400,
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Search
+          size={14}
+          style={{
+            position: 'absolute',
+            left: '1rem',
+            color: 'rgba(138,101,72,.45)',
+            pointerEvents: 'none',
+          }}
+        />
+        <input
+          type="search"
+          placeholder="Buscar cursos..."
+          style={{
+            width: '100%',
+            height: 38,
+            paddingLeft: '2.5rem',
+            paddingRight: '1rem',
+            background: '#F5EDE2',
+            border: '1px solid transparent',
+            borderBottom: '1.5px solid rgba(201,165,90,.2)',
+            outline: 'none',
+            fontFamily: "'Jost', sans-serif",
+            fontSize: '.82rem',
+            fontWeight: 400,
+            color: '#1E0F05',
+            transition: 'border-color .2s, background .2s',
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderBottomColor = '#C9A55A'
+            e.currentTarget.style.background = '#EDE0D0'
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderBottomColor = 'rgba(201,165,90,.2)'
+            e.currentTarget.style.background = '#F5EDE2'
+          }}
+        />
+      </div>
+
+      {/* Actions */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', flexShrink: 0 }}>
         <button
-          onClick={onMenuClick}
-          className="lg:hidden p-2 -ml-2 text-foreground hover:text-primary"
-          aria-label="Abrir menu"
+          style={{
+            position: 'relative',
+            width: 38,
+            height: 38,
+            background: 'none',
+            border: '1px solid rgba(201,165,90,.15)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#8A6548',
+            transition: 'all .2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(201,165,90,.4)'
+            e.currentTarget.style.color = '#C9A55A'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(201,165,90,.15)'
+            e.currentTarget.style.color = '#8A6548'
+          }}
         >
-          <Menu className="h-6 w-6" />
+          <Bell size={15} strokeWidth={1.5} />
+          {/* Notification dot */}
+          <span
+            style={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              width: 5,
+              height: 5,
+              background: '#C9A55A',
+              borderRadius: '50%',
+            }}
+          />
         </button>
-
-        {/* Search */}
-        <div className="hidden md:flex flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Buscar cursos..."
-              className="pl-10 bg-secondary border-0"
-            />
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5 text-muted-foreground" />
-            <span className="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full" />
-            <span className="sr-only">Notificações</span>
-          </Button>
-        </div>
       </div>
     </header>
   )

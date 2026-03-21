@@ -7,45 +7,68 @@ import { DashboardSidebar } from '@/components/dashboard/sidebar'
 import { DashboardHeader } from '@/components/dashboard/header'
 import { Loader2 } from 'lucide-react'
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/login')
-    }
+    if (!isLoading && !user) router.push('/login')
   }, [user, isLoading, router])
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-          <p className="mt-4 text-muted-foreground">Carregando...</p>
-        </div>
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#FFFDF9',
+          flexDirection: 'column',
+          gap: '1.2rem',
+          fontFamily: "'Jost', sans-serif",
+        }}
+      >
+        <Loader2
+          size={28}
+          style={{ color: '#C9A55A', animation: 'spin 1s linear infinite' }}
+        />
+        <p
+          style={{
+            fontSize: '.72rem',
+            fontWeight: 500,
+            letterSpacing: '.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(138,101,72,.5)',
+          }}
+        >
+          Carregando...
+        </p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     )
   }
 
-  if (!user) {
-    return null
-  }
+  if (!user) return null
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <DashboardSidebar 
-        open={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)} 
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        background: '#FFFDF9',
+        fontFamily: "'Jost', sans-serif",
+      }}
+    >
+      <DashboardSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
-      <div className="flex-1 flex flex-col min-w-0">
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflowX: 'hidden' }}>
         <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 p-4 lg:p-8">
+        <main style={{ flex: 1 }}>
           {children}
         </main>
       </div>
