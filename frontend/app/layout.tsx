@@ -1,26 +1,27 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, Jost } from 'next/font/google'
+import { DM_Serif_Display, Outfit } from 'next/font/google'
 import { AuthProvider } from '@/contexts/auth-context'
 import './globals.css'
 
-const playfair = Playfair_Display({
+const dmSerif = DM_Serif_Display({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400'],
   style: ['normal', 'italic'],
-  variable: '--font-playfair',
+  variable: '--font-cormorant',
   display: 'swap',
 })
 
-const jost = Jost({
+const outfit = Outfit({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-jost',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-outfit',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'Liber Laser Academy | Locação · Educação · Tecnologia',
-  description: 'Alugamos equipamentos de laser profissional e formamos profissionais para transformar tecnologia em faturamento real.',
+  description:
+    'Alugamos equipamentos de laser profissional e formamos profissionais para transformar tecnologia em faturamento real.',
 }
 
 export const viewport: Viewport = {
@@ -31,10 +32,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={`${playfair.variable} ${jost.variable} antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className={`${dmSerif.variable} ${outfit.variable} antialiased`}>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   )
