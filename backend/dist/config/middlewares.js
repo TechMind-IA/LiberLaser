@@ -25,7 +25,7 @@ exports.default = [
             origin: [
                 'http://localhost:3000',
                 'http://localhost:3001',
-                'https://beleza-academy.vercel.app',
+                'https://liber-laser.vercel.app/',
             ],
             methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
             credentials: true,
