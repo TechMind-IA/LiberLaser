@@ -1,64 +1,40 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import { Playfair_Display, Jost } from 'next/font/google'
 import { AuthProvider } from '@/contexts/auth-context'
-import { Cormorant_Garamond, Outfit } from "next/font/google"
 import './globals.css'
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"],
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-playfair',
-  display: 'swap'
-});
+  display: 'swap',
+})
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-  display: 'swap'
-});
+const jost = Jost({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-jost',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'Beleza Academy | Cursos de Estética Premium',
-  description: 'Plataforma de cursos online focada na área de estética. Aprenda com os melhores profissionais e transforme sua carreira.',
-  generator: 'v0.app',
-  keywords: ['cursos de estética', 'beleza', 'cosmetologia', 'estética facial', 'estética corporal'],
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: 'Liber Laser Academy | Locação · Educação · Tecnologia',
+  description: 'Alugamos equipamentos de laser profissional e formamos profissionais para transformar tecnologia em faturamento real.',
 }
 
 export const viewport: Viewport = {
-  themeColor: '#c9a962',
   width: 'device-width',
   initialScale: 1,
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={`${playfair.variable} ${inter.variable} font-sans antialiased`}>
+      <body className={`${playfair.variable} ${jost.variable} antialiased`}>
         <AuthProvider>
           {children}
         </AuthProvider>
-        <Analytics />
       </body>
     </html>
   )

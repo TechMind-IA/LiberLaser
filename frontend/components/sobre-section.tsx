@@ -1,147 +1,40 @@
 export default function SobreSection() {
-  const stats = [
-    { number: "808", label: "nm · Diodo Premium" },
-    { number: "4", label: "Planos disponíveis" },
-    { number: "2", label: "Tratamentos em 1" },
-    { number: "∞", label: "Potencial de renda" },
-  ];
-
   return (
     <section
       id="sobre"
-      className="relative"
-      style={{ padding: "10rem 0 8rem", background: "#0D0D0D" }}
+      style={{ padding: "6rem 5%", background: "#FFFDF9", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "center", fontFamily: "'Jost', sans-serif" }}
     >
-      <div className="max-w-6xl mx-auto px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-          {/* Text */}
-          <div>
-            <div
-              className="flex items-center gap-3 mb-5"
-              style={{ color: "#C9A55A" }}
-            >
-              <span
-                style={{
-                  display: "inline-block",
-                  width: 28,
-                  height: "0.5px",
-                  background: "#C9A55A",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontSize: "0.68rem",
-                  fontWeight: 500,
-                  letterSpacing: "0.28em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Sobre nós
-              </span>
-            </div>
+      <div style={{ background: "#F5EDE2", height: 360, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,165,90,.15)", position: "relative" as const, overflow: "hidden" }}>
+        <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "6rem", fontWeight: 700, color: "rgba(201,165,90,.07)", position: "absolute" as const, fontStyle: "italic", letterSpacing: ".05em", userSelect: "none" as const }}>
+          Liber
+        </span>
+        <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: ".95rem", color: "#8A6548", fontStyle: "italic", fontWeight: 400, position: "relative" as const, zIndex: 1 }}>
+          Liber Laser Academy
+        </span>
+      </div>
 
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: "clamp(2.2rem, 4vw, 3.4rem)",
-                fontWeight: 300,
-                lineHeight: 1.1,
-                color: "#FFFFFF",
-              }}
-            >
-              Alugar é só
-              <br />
-              o <em style={{ fontStyle: "italic", color: "#C9A55A" }}>começo.</em>
-            </h2>
+      <div>
+        <p style={{ fontSize: ".72rem", fontWeight: 600, letterSpacing: ".25em", textTransform: "uppercase" as const, color: "#C9A55A", marginBottom: ".8rem", display: "flex", alignItems: "center", gap: ".7rem" }}>
+          <span style={{ display: "block", width: 20, height: 1.5, background: "#C9A55A", flexShrink: 0 }} />
+          Sobre nós
+        </p>
 
-            <p
-              className="mt-8 leading-loose"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "0.95rem",
-                fontWeight: 300,
-                color: "rgba(245,240,232,0.6)",
-              }}
-            >
-              A Liber Laser Academy nasceu para apoiar clínicas e profissionais
-              que querem trabalhar com depilação e clareamento a laser de forma
-              consciente e lucrativa.
-            </p>
-            <p
-              className="mt-5 leading-loose"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "0.95rem",
-                fontWeight: 300,
-                color: "rgba(245,240,232,0.6)",
-              }}
-            >
-              Mais do que disponibilizar a máquina, acompanhamos cada etapa do
-              processo. Orientamos, treinamos e organizamos o uso do laser para
-              que ele se torne uma fonte real de renda.
-            </p>
+        <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(1.8rem, 3vw, 2.8rem)", fontWeight: 600, lineHeight: 1.2, color: "#1E0F05", marginBottom: "1.2rem" }}>
+          Alugar é só<br />
+          o <em style={{ color: "#C9A55A", fontStyle: "italic", fontWeight: 400 }}>começo.</em>
+        </h2>
 
-            <div
-              className="mt-10"
-              style={{ borderLeft: "0.5px solid #C9A55A", paddingLeft: "2rem" }}
-            >
-              <blockquote
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: "1.3rem",
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  color: "rgba(245,240,232,0.75)",
-                  lineHeight: 1.6,
-                }}
-              >
-                "O que realmente importa é ver nossos parceiros evoluindo e
-                prosperando."
-              </blockquote>
-            </div>
-          </div>
+        <p style={{ fontSize: ".97rem", fontWeight: 400, color: "#4A2E18", lineHeight: 1.8 }}>
+          A Liber Laser Academy nasceu para apoiar clínicas e profissionais que desejam trabalhar com laser de forma consciente, segura e lucrativa.
+        </p>
+        <p style={{ fontSize: ".97rem", fontWeight: 400, color: "#4A2E18", lineHeight: 1.8, marginTop: "1rem" }}>
+          Mais do que um equipamento, entregamos orientação, método e acompanhamento para que cada parceiro transforme a tecnologia em uma fonte real de renda.
+        </p>
 
-          {/* Stats grid */}
-          <div
-            className="grid grid-cols-2"
-            style={{ gap: "1.5px", background: "rgba(201,165,90,0.12)" }}
-          >
-            {stats.map((s) => (
-              <div
-                key={s.label}
-                className="text-center"
-                style={{ background: "#1A1A1A", padding: "2.5rem" }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontSize: "3rem",
-                    fontWeight: 300,
-                    color: "#C9A55A",
-                    lineHeight: 1,
-                    display: "block",
-                  }}
-                >
-                  {s.number}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontSize: "0.72rem",
-                    fontWeight: 400,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "rgba(245,240,232,0.4)",
-                    marginTop: "0.6rem",
-                    display: "block",
-                  }}
-                >
-                  {s.label}
-                </span>
-              </div>
-            ))}
-          </div>
+        <div style={{ borderLeft: "3px solid #C9A55A", paddingLeft: "1.4rem", marginTop: "2rem" }}>
+          <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.05rem", fontStyle: "italic", fontWeight: 400, color: "#4A2E18", lineHeight: 1.65 }}>
+            "O que realmente importa é ver nossos parceiros evoluindo e prosperando."
+          </p>
         </div>
       </div>
     </section>

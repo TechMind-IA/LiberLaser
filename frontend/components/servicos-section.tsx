@@ -3,27 +3,24 @@
 const servicos = [
   {
     num: "01",
-    title: "Depilação a Laser",
-    description:
-      "Tratamento recorrente que garante agenda cheia e faturamento previsível. Sessões rápidas, seguras e com alta rotatividade criam pacotes que fidelizam clientes e geram receita constante para sua clínica.",
-    tags: ["Alta rotatividade", "Recorrência", "808 nm"],
+    title: "Depilação a laser",
+    desc: "Tratamento recorrente com alta rotatividade. Sessões rápidas, seguras e protocolos organizados para maximizar a agenda e gerar receita previsível.",
+    tags: ["Alta recorrência", "808 nm", "Agenda cheia"],
     icon: (
-      <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#C9A55A" strokeWidth={1.5}>
-        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" />
-        <path d="M12 7v5l3 3" />
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A55A" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />
       </svg>
     ),
   },
   {
     num: "02",
-    title: "Clareamento a Laser",
-    description:
-      "Alto valor percebido com baixo custo operacional. Um procedimento complementar que aumenta o ticket médio, potencializa resultados e diferencia sua clínica com tecnologia avançada.",
-    tags: ["Alto ticket", "Diferencial", "Resultados visíveis"],
+    title: "Clareamento a laser",
+    desc: "Serviço de alto valor percebido e baixo custo operacional. Diferencial que eleva o ticket médio e posiciona sua clínica em um segmento premium.",
+    tags: ["Alto ticket", "Diferencial", "Premium"],
     icon: (
-      <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#C9A55A" strokeWidth={1.5}>
-        <circle cx="12" cy="12" r="5" />
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A55A" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
       </svg>
     ),
   },
@@ -31,84 +28,46 @@ const servicos = [
 
 export default function ServicosSection() {
   return (
-    <section
-      id="servicos"
-      style={{ padding: "8rem 0", background: "#1A1A1A" }}
-    >
-      <div className="max-w-6xl mx-auto px-10">
-        {/* Header */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-end mb-20">
-          <div>
-            <div className="flex items-center gap-3 mb-5" style={{ color: "#C9A55A" }}>
-              <span style={{ display: "inline-block", width: 28, height: "0.5px", background: "#C9A55A" }} />
-              <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", fontWeight: 500, letterSpacing: "0.28em", textTransform: "uppercase" as const }}>
-                O que oferecemos
-              </span>
-            </div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(2.2rem, 4vw, 3.4rem)", fontWeight: 300, lineHeight: 1.1, color: "#FFFFFF" }}>
-              Dois serviços.<br />
-              <em style={{ fontStyle: "italic", color: "#C9A55A" }}>Infinitas</em> possibilidades.
-            </h2>
-          </div>
-          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.9rem", fontWeight: 300, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>
-            A tecnologia 808 nm abre espaço para dois serviços de alto valor percebido,
-            ampliando seu portfólio sem elevar custos operacionais.
+    <section id="servicos" style={{ padding: "6rem 5%", background: "#FBF7F2", fontFamily: "'Jost', sans-serif" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "end", marginBottom: "3rem" }}>
+        <div>
+          <p style={{ fontSize: ".72rem", fontWeight: 600, letterSpacing: ".25em", textTransform: "uppercase" as const, color: "#C9A55A", marginBottom: ".8rem", display: "flex", alignItems: "center", gap: ".7rem" }}>
+            <span style={{ display: "block", width: 20, height: 1.5, background: "#C9A55A", flexShrink: 0 }} />
+            Serviços
           </p>
+          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(1.8rem, 3vw, 2.8rem)", fontWeight: 600, lineHeight: 1.2, color: "#1E0F05" }}>
+            Dois tratamentos.<br />
+            <em style={{ color: "#C9A55A", fontStyle: "italic", fontWeight: 400 }}>Infinitas</em> possibilidades.
+          </h2>
         </div>
+        <p style={{ fontSize: ".9rem", fontWeight: 400, color: "#4A2E18", lineHeight: 1.8 }}>
+          A tecnologia 808 nm permite oferecer dois serviços de alta procura e alto valor percebido, ampliando seu portfólio sem elevar os custos operacionais.
+        </p>
+      </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "1.5px", background: "rgba(201,165,90,0.1)" }}>
-          {servicos.map((s) => (
-            <div
-              key={s.num}
-              className="group relative overflow-hidden transition-colors duration-400"
-              style={{ background: "#1A1A1A", padding: "3.5rem" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#2A2A2A")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#1A1A1A")}
-            >
-              <span
-                className="absolute top-8 right-10 transition-all duration-400"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "5rem", fontWeight: 300, color: "rgba(201,165,90,0.1)", lineHeight: 1 }}
-              >
-                {s.num}
-              </span>
-
-              <div
-                className="flex items-center justify-center mb-8"
-                style={{ width: 48, height: 48, border: "0.5px solid rgba(201,165,90,0.3)" }}
-              >
-                {s.icon}
-              </div>
-
-              <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.8rem", fontWeight: 400, color: "#FFFFFF", marginBottom: "1rem" }}>
-                {s.title}
-              </h3>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.88rem", fontWeight: 300, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>
-                {s.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mt-8">
-                {s.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontFamily: "'Outfit', sans-serif",
-                      fontSize: "0.65rem",
-                      fontWeight: 500,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase" as const,
-                      color: "#C9A55A",
-                      border: "0.5px solid rgba(201,165,90,0.25)",
-                      padding: "0.3rem 0.9rem",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, background: "rgba(201,165,90,.15)" }}>
+        {servicos.map((s) => (
+          <div
+            key={s.num}
+            style={{ background: "#FFFDF9", padding: "3rem", transition: "background .3s", cursor: "default" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5EDE2")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#FFFDF9")}
+          >
+            <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: ".75rem", color: "#C9A55A", fontWeight: 600, marginBottom: "1.4rem" }}>{s.num}</div>
+            <div style={{ width: 46, height: 46, border: "1.5px solid rgba(201,165,90,.35)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.4rem" }}>
+              {s.icon}
             </div>
-          ))}
-        </div>
+            <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.45rem", fontWeight: 600, color: "#1E0F05", marginBottom: ".8rem" }}>{s.title}</h3>
+            <p style={{ fontSize: ".9rem", fontWeight: 400, color: "#4A2E18", lineHeight: 1.8 }}>{s.desc}</p>
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: ".5rem", marginTop: "1.5rem" }}>
+              {s.tags.map((tag) => (
+                <span key={tag} style={{ fontSize: ".62rem", fontWeight: 600, letterSpacing: ".15em", textTransform: "uppercase" as const, color: "#A6823A", background: "rgba(201,165,90,.1)", padding: ".28rem .8rem" }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

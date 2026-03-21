@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-
 export default function PublicHeader() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -16,105 +15,53 @@ export default function PublicHeader() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center transition-all duration-400"
       style={{
-        padding: scrolled ? "0.9rem 4rem" : "1.25rem 4rem",
-        background: scrolled ? "rgba(13,13,13,0.92)" : "transparent",
+        position: "fixed",
+        top: 0, left: 0, right: 0,
+        zIndex: 100,
+        height: 68,
+        padding: "0 5%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: scrolled ? "rgba(255,253,249,.96)" : "#FFFDF9",
         backdropFilter: scrolled ? "blur(12px)" : "none",
-        borderBottom: scrolled ? "0.5px solid rgba(201,165,90,0.2)" : "none",
+        borderBottom: "1px solid rgba(201,165,90,.2)",
+        transition: "all .3s",
+        fontFamily: "'Jost', sans-serif",
       }}
     >
-      <Link href="/">
+      <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
         <Image
-          src="/logo.png" 
-          alt="Liber Laser"
+          src="/logo.png"
+          alt="Liber Laser Academy"
           width={140}
           height={48}
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", display: "block" }}
+          priority
         />
       </Link>
 
-      <ul className="hidden md:flex gap-10 list-none">
+      <ul style={{ display: "flex", gap: "2.5rem", listStyle: "none", margin: 0, padding: 0 }}>
         {[
           { label: "Sobre", href: "#sobre" },
           { label: "Serviços", href: "#servicos" },
+          { label: "Diferenciais", href: "#diferenciais" },
           { label: "Planos", href: "#planos" },
-          { label: "FAQ", href: "#faq" },
         ].map((item) => (
           <li key={item.href}>
-            <a
-              href={item.href}
-              className="transition-colors duration-300 hover:text-yellow-400"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "0.78rem",
-                fontWeight: 500,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "rgba(245,240,232,0.6)",
-                textDecoration: "none",
-              }}
-            >
+            <a href={item.href} style={{ fontFamily: "'Jost', sans-serif", fontSize: ".78rem", fontWeight: 500, letterSpacing: ".12em", textTransform: "uppercase" as const, color: "#8A6548", textDecoration: "none" }}>
               {item.label}
             </a>
           </li>
         ))}
       </ul>
 
-      <div className="flex items-center gap-3">
-        {/* Área restrita */}
-        <Link
-          href="/login"
-          className="transition-all duration-300"
-          style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: "0.78rem",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "rgba(245,240,232,0.6)",
-            border: "0.5px solid rgba(245,240,232,0.15)",
-            padding: "0.6rem 1.4rem",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            transition: "all 0.3s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,165,90,0.5)";
-            (e.currentTarget as HTMLAnchorElement).style.color = "#C9A55A";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(245,240,232,0.15)";
-            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(245,240,232,0.6)";
-          }}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-          Área do Aluno
+      <div style={{ display: "flex", gap: ".8rem", alignItems: "center" }}>
+        <Link href="/login" style={{ fontFamily: "'Jost', sans-serif", fontSize: ".75rem", fontWeight: 500, letterSpacing: ".1em", textTransform: "uppercase" as const, textDecoration: "none", padding: ".55rem 1.3rem", color: "#4A2E18", border: "1.5px solid rgba(74,46,24,.25)" }}>
+          Área do aluno
         </Link>
-
-        {/* WhatsApp CTA */}
-        <a
-          href="https://wa.me/55"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-all duration-300 hover:-translate-y-px"
-          style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: "0.78rem",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "#0D0D0D",
-            background: "#C9A55A",
-            padding: "0.6rem 1.6rem",
-            textDecoration: "none",
-          }}
-        >
+        <a href="https://wa.me/55" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Jost', sans-serif", fontSize: ".75rem", fontWeight: 500, letterSpacing: ".1em", textTransform: "uppercase" as const, textDecoration: "none", padding: ".55rem 1.3rem", background: "#C9A55A", color: "#FFFDF9" }}>
           Falar no WhatsApp
         </a>
       </div>
