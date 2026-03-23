@@ -32,13 +32,13 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
 
   email: {
     config: {
-      provider: env('EMAIL_PROVIDER', 'sendgrid'),
+      provider: 'strapi-provider-email-resend',
       providerOptions: {
-        apiKey: env('SENDGRID_API_KEY', ''),
+        apiKey: env('RESEND_API_KEY'),
       },
       settings: {
-        defaultFrom: env('EMAIL_FROM', 'noreply@belezaacademy.com'),
-        defaultReplyTo: env('EMAIL_REPLY_TO', 'noreply@belezaacademy.com'),
+        defaultFrom: env('EMAIL_FROM', 'noreply@liberlaser.com'),
+        defaultReplyTo: env('EMAIL_REPLY_TO', 'noreply@liberlaser.com'),
       },
     },
   },
