@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import PublicHeader from '@/components/public-header'
 import Footer from '@/components/footer'
+import Image from 'next/image'
 
 // ─── Dados — FAQ ───────────────────────────────────────────────────────────────
 const faqs = [
@@ -101,7 +102,7 @@ const planos = [
 
 // ─── Dados — Diferenciais ──────────────────────────────────────────────────────
 const diferenciais = [
-  { num: '01', title: 'Formação em depilação',   desc: 'Capacitação teórica e prática para atender com segurança e confiança desde o primeiro atendimento.' },
+  { num: '01', title: 'Formação em depilação',   desc: 'Capacitação teórica e prática para atender com segurança e confiança no primeiro atendimento.' },
   { num: '02', title: 'Formação em clareamento', desc: 'Protocolos exclusivos para ampliar o portfólio com procedimentos de alto valor percebido.' },
   { num: '03', title: 'Protocolos testados',      desc: 'Processos validados para padronizar atendimentos, reduzir erros e escalar os resultados.' },
   { num: '04', title: 'Suporte técnico',          desc: 'Acompanhamento contínuo durante todo o período de locação do equipamento.' },
@@ -119,6 +120,86 @@ const paraQuem = [
   'Precisa de orientação para transformar tecnologia em resultado financeiro real',
 ]
 
+function PlanAccordion({ plano, defaultOpen = false }: { plano: typeof planos[0], defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen)
+
+  return (
+    <div className={`${plano.destaque ? 'border-l-2 border-l-accent' : ''}`}>
+
+      {/* Header clicável */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`w-full flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 text-left transition-colors duration-200 ${
+          plano.destaque ? 'bg-accent/5 hover:bg-accent/10' : 'bg-bg hover:bg-surface'
+        }`}
+      >
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <div className="min-w-0">
+            <span className="block text-accent text-[0.58rem] font-bold tracking-[0.2em] uppercase mb-0.5">
+              {plano.periodo}
+            </span>
+            <span className="font-serif text-primary text-base sm:text-lg font-semibold">
+              {plano.nome}
+              {'badge' in plano && plano.badge && (
+                <span className="ml-2 bg-accent text-bg text-[0.5rem] font-bold tracking-[0.14em] uppercase px-2 py-0.5 align-middle">
+                  {plano.badge}
+                </span>
+              )}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0 ml-4">
+          <div className="text-right">
+            <span className="block font-serif text-accent text-xl sm:text-2xl font-semibold leading-none">
+              {plano.preco6h}
+            </span>
+            <span className="block text-[0.68rem] font-medium text-secondary/60 mt-1">
+              ou {plano.preco12h} / 12h
+            </span>
+          </div>
+          <span
+            className="text-accent/50 text-xs transition-transform duration-300"
+            style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          >
+            ▾
+          </span>
+        </div>
+      </button>
+
+      {/* Body expansível */}
+      <div
+        className="overflow-hidden transition-all duration-300"
+        style={{ maxHeight: open ? '500px' : '0px' }}
+      >
+        <div className={`px-5 sm:px-6 pt-4 pb-5 border-t border-accent/10 ${plano.destaque ? 'bg-accent/[0.03]' : 'bg-bg'}`}>
+          <ul className="flex flex-col gap-2.5 mb-4">
+            {plano.features.map((f) => (
+              <li
+                key={f}
+                className={`flex items-start gap-2.5 text-sm leading-snug ${
+                  plano.extras.includes(f) ? 'text-accent font-semibold' : 'text-secondary'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
+                    plano.extras.includes(f) ? 'bg-accent' : 'border border-accent/40'
+                  }`}
+                />
+                {f}
+              </li>
+            ))}
+          </ul>
+          <p className="text-[0.58rem] font-bold tracking-[0.14em] uppercase text-secondary/40">
+            {plano.prioridade}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null)
@@ -132,9 +213,9 @@ export default function Home() {
       ═══════════════════════════════════════════════════════════════════════ */}
       <section
         id="inicio"
-        className="min-h-screen bg-bg flex items-center px-6 sm:px-10 lg:px-16 pt-20"
+        className="min-h-screen bg-bg flex items-center px-6 sm:px-10 lg:px-16"
       >
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-center py-8 lg:py-0">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center py-16">
 
           {/* Texto */}
           <div>
@@ -174,17 +255,30 @@ export default function Home() {
           </div>
 
           {/* Vídeo */}
-          <div className="relative">
-            <div className="absolute inset-0 translate-x-3 translate-y-3 border border-accent/20 pointer-events-none" />
+          <div className="relative" style={{ paddingBottom: '2rem' }}>
+
+            {/* Frame traseiro */}
+            <div className="absolute pointer-events-none" style={{ top: -12, left: -12, right: -12, bottom: 24, border: '1px solid rgba(196,137,106,0.35)', zIndex: 0 }} />
+
+            {/* Cantos em L — dourados */}
+            <div className="absolute" style={{ top: -12, left: -12, width: 24, height: 24, borderTop: '2px solid #C4896A', borderLeft: '2px solid #C4896A', zIndex: 2 }} />
+            <div className="absolute" style={{ top: -12, right: -12, width: 24, height: 24, borderTop: '2px solid #C4896A', borderRight: '2px solid #C4896A', zIndex: 2 }} />
+            <div className="absolute" style={{ bottom: 24, left: -12, width: 24, height: 24, borderBottom: '2px solid #C4896A', borderLeft: '2px solid #C4896A', zIndex: 2 }} />
+            <div className="absolute" style={{ bottom: 24, right: -12, width: 24, height: 24, borderBottom: '2px solid #C4896A', borderRight: '2px solid #C4896A', zIndex: 2 }} />
+
+            {/* Vídeo sem player */}
             <div className="relative z-10">
               <video
                 src="/video1.mp4"
-                controls
+                autoPlay
+                loop
+                muted
                 playsInline
                 className="w-full block bg-surface"
               />
             </div>
-            <p className="mt-4 text-center text-[0.68rem] font-semibold tracking-[0.2em] uppercase text-muted">
+
+            <p className="mt-4 text-center text-[0.68rem] font-semibold tracking-[0.2em] uppercase text-accent">
               Conheça a Liber Laser Academy
             </p>
           </div>
@@ -216,24 +310,25 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════════════
           SOBRE
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section id="sobre" className="bg-bg py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <section id="sobre" className="bg-bg py-6 lg:py-36 px-6 sm:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-24 items-center">
 
           {/* Decorativo */}
-          <div className="relative h-72 sm:h-96 bg-surface border border-(--color-border) flex items-center justify-center overflow-hidden">
-            <span className="font-serif text-[7rem] sm:text-[10rem] font-bold text-accent/8 italic select-none absolute pointer-events-none">
-              Liber
-            </span>
-            <span className="font-serif text-secondary italic text-lg sm:text-xl relative z-10">
-              Liber Laser Academy
-            </span>
-            <div className="absolute bottom-6 right-6 w-px h-20 bg-accent/25" />
-            <div className="absolute top-6 left-6 w-20 h-px bg-accent/25" />
+          <div className="relative h-72 sm:h-96 overflow-hidden">
+            <Image
+              src="/fundadora.jpg"
+              alt="Fundadora da Liber Laser Academy"
+              fill
+              className="object-cover object-center"
+            />
+            {/* Cantos decorativos */}
+            <div className="absolute bottom-6 right-6 w-px h-20 bg-accent/40 z-10" />
+            <div className="absolute top-6 left-6 w-20 h-px bg-accent/40 z-10" />
           </div>
 
           {/* Texto */}
-          <div>
-            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-7">
+          <div className='py-0'>
+            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-5">
               <span className="w-6 h-px bg-accent shrink-0" />
               Sobre nós
             </p>
@@ -247,7 +342,7 @@ export default function Home() {
               A Liber Laser Academy nasceu para apoiar clínicas e profissionais
               que desejam trabalhar com laser de forma consciente, segura e lucrativa.
             </p>
-            <p className="text-secondary text-base leading-relaxed mb-10">
+            <p className="text-secondary text-base leading-relaxed mb-4">
               Mais do que um equipamento, entregamos orientação, método e
               acompanhamento para que cada parceiro transforme a tecnologia em
               uma fonte real de renda.
@@ -265,11 +360,11 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════════════
           SERVIÇOS
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section id="servicos" className="bg-surface py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
+      <section id="servicos" className="bg-surface py-8 lg:py-36 px-6 sm:px-10 lg:px-16">
         <div className="max-w-7xl mx-auto">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end mb-16">
-            <div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end mb-7">
+            <div className='mb-0'>
               <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-7">
                 <span className="w-6 h-px bg-accent shrink-0" />
                 Serviços
@@ -286,38 +381,35 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-(--color-border)">
             {[
               {
                 num: '01',
                 title: 'Depilação a laser',
-                desc: 'Tratamento recorrente com alta rotatividade. Sessões rápidas, seguras e protocolos organizados para maximizar a agenda e gerar receita previsível.',
+                desc: 'Tratamento recorrente, agenda cheia e faturamento previsível. A tecnologia 808 nm permite sessões rápidas e seguras, criando pacotes que fidelizam clientes e garantem receita constante.',
                 tags: ['Alta recorrência', '808 nm', 'Agenda cheia'],
               },
               {
                 num: '02',
                 title: 'Clareamento a laser',
-                desc: 'Serviço de alto valor percebido e baixo custo operacional. Diferencial que eleva o ticket médio e posiciona sua clínica em um segmento premium.',
+                desc: 'Alto valor percebido com baixo custo operacional. Um procedimento complementar que aumenta o ticket médio, potencializa resultados e diferencia sua clínica com tecnologia avançada.',
                 tags: ['Alto ticket', 'Diferencial', 'Premium'],
               },
             ].map((s) => (
               <div
                 key={s.num}
-                className="bg-bg border border-(--color-border) p-8 sm:p-12 hover:border-accent/50 transition-colors duration-300 group"
+                className="bg-bg p-6 sm:p-8 hover:bg-surface transition-colors duration-300 group"
               >
-                <p className="font-serif text-accent/60 text-sm font-semibold mb-8">{s.num}</p>
+                {/* Número decorativo */}
+                <p className="font-serif text-accent/30 text-5xl sm:text-6xl font-semibold leading-none mb-6 select-none">
+                  {s.num}
+                </p>
 
-                <div className="w-10 h-10 border border-(--color-border) flex items-center justify-center mb-8 group-hover:border-accent/50 transition-colors duration-300">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M12 7v5l3 3" />
-                  </svg>
-                </div>
-
-                <h3 className="font-serif text-primary text-2xl sm:text-3xl font-semibold mb-4">
+                <h3 className="font-serif text-primary text-xl sm:text-2xl font-semibold mb-3">
                   {s.title}
                 </h3>
-                <p className="text-secondary text-sm sm:text-base leading-relaxed mb-8">
+
+                <p className="text-secondary text-sm leading-relaxed mb-6">
                   {s.desc}
                 </p>
 
@@ -325,7 +417,7 @@ export default function Home() {
                   {s.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-accent text-[0.62rem] font-bold tracking-[0.16em] uppercase bg-accent/10 px-3 py-1.5"
+                      className="text-accent text-[0.58rem] font-bold tracking-[0.16em] uppercase border border-accent/30 px-2.5 py-1 group-hover:border-accent/60 transition-colors duration-300"
                     >
                       {tag}
                     </span>
@@ -340,15 +432,16 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════════════
           DIFERENCIAIS
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section id="diferenciais" className="bg-bg py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
+      <section id="diferenciais" className="bg-bg py-8 sm:py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto flex flex-col lg:grid lg:grid-cols-3 lg:gap-16 lg:items-start">
 
-          <div>
-            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-7">
+          {/* Texto intro */}
+          <div className="mb-7 sm:mb-12 lg:mb-0">
+            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-5 sm:mb-7">
               <span className="w-6 h-px bg-accent shrink-0" />
               Diferenciais
             </p>
-            <h2 className="font-serif text-primary font-semibold leading-tight text-3xl sm:text-4xl lg:text-5xl mb-6">
+            <h2 className="font-serif text-primary font-semibold leading-tight text-3xl sm:text-4xl lg:text-5xl mb-5 sm:mb-6">
               Mais do que<br />
               uma <em className="text-accent not-italic">máquina.</em>
             </h2>
@@ -358,16 +451,14 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-px bg-(--color-border)">
+          {/* Grid de itens */}
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-px">
             {diferenciais.map((item) => (
               <div
                 key={item.num}
-                className="bg-bg p-8 sm:p-10 hover:bg-surface transition-colors duration-300"
+                className="bg-bg p-2 sm:p-8 hover:bg-surface transition-colors duration-300"
               >
-                <p className="text-accent text-[0.68rem] font-bold tracking-[0.12em] mb-4">
-                  {item.num}
-                </p>
-                <h4 className="text-primary font-semibold text-base mb-2">
+                <h4 className="text-primary font-semibold text-sm sm:text-base mb-2">
                   {item.title}
                 </h4>
                 <p className="text-secondary text-sm leading-relaxed">
@@ -376,18 +467,22 @@ export default function Home() {
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           PARA QUEM
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section className="bg-surface py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
+      <section className="bg-surface py-16 sm:py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
         <div className="max-w-7xl mx-auto">
 
-          <div className="text-center mb-16">
-            <p className="text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-6">
-              Para quem é
+          {/* Header */}
+          <div className="text-center mb-10 sm:mb-14">
+            <p className="flex items-center justify-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-5">
+              <span className="w-5 h-px bg-accent shrink-0" />
+              Para quem é?
+              <span />
             </p>
             <h2 className="font-serif text-primary font-semibold leading-tight text-3xl sm:text-4xl lg:text-5xl">
               A Liber foi criada<br />
@@ -395,33 +490,47 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-(--color-border)">
+          {/* Lista */}
+          <div className="flex flex-col gap-px bg-accent/15 max-w-4xl mx-auto">
             {paraQuem.map((text, i) => (
               <div
                 key={i}
-                className="bg-surface p-8 sm:p-10 hover:bg-bg transition-colors duration-300 group"
+                className="bg-surface hover:bg-bg transition-colors duration-200 group flex items-start gap-4 sm:gap-5 px-5 sm:px-7 py-4 sm:py-5"
               >
-                <span className="block text-accent/40 text-xl mb-4 group-hover:text-accent transition-colors duration-300">
-                  →
+                {/* Número */}
+                <span className="font-serif text-accent/40 text-[0.72rem] font-semibold tracking-[0.08em] min-w-[24px] pt-0.5 shrink-0">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <p className="text-secondary text-sm sm:text-base leading-relaxed">
+
+                {/* Linha divisória vertical */}
+                <span className="w-px self-stretch bg-accent/20 shrink-0" />
+
+                {/* Texto */}
+                <p className="text-secondary text-sm sm:text-base leading-relaxed flex-1">
                   {text}
                 </p>
+
+                {/* Seta */}
+                <span className="text-accent/30 group-hover:text-accent transition-colors duration-200 shrink-0 pt-0.5 text-base">
+                  →
+                </span>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           PLANOS
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section id="planos" className="bg-bg py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
+      <section id="planos" className="bg-bg py-10 sm:py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
         <div className="max-w-7xl mx-auto">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end mb-16">
+          {/* Header */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end mb-10 sm:mb-14">
             <div>
-              <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-7">
+              <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-5 sm:mb-7">
                 <span className="w-6 h-px bg-accent shrink-0" />
                 Planos
               </p>
@@ -436,66 +545,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-(--color-border)">
-            {planos.map((p) => (
-              <div
-                key={p.nome}
-                className={`flex flex-col p-8 transition-colors duration-300 hover:bg-surface ${
-                  p.destaque
-                    ? 'bg-surface border-t-2 border-t-accent'
-                    : 'bg-bg'
-                }`}
-              >
-                {'badge' in p && p.badge && (
-                  <span className="self-start bg-accent text-bg text-[0.58rem] font-bold tracking-[0.16em] uppercase px-3 py-1 mb-5">
-                    {p.badge}
-                  </span>
-                )}
+          {/* Info box */}
+          <div className="border border-accent/20 px-4 py-3 sm:px-5 sm:py-4 mb-6 flex items-start gap-3">
+            <span className="text-accent text-[0.65rem] shrink-0 mt-0.5">◆</span>
+            <p className="text-secondary text-xs sm:text-sm leading-relaxed">
+              Toque em cada plano para ver o que está incluído. Quanto maior o período, menor o valor mensal e maior a prioridade de agendamento.
+            </p>
+          </div>
 
-                <p className="text-accent text-[0.62rem] font-semibold tracking-[0.22em] uppercase mb-1">
-                  {p.periodo}
-                </p>
-                <h3 className="font-serif text-primary text-2xl sm:text-3xl font-semibold mb-5">
-                  {p.nome}
-                </h3>
-
-                <div className="font-serif text-accent text-3xl font-semibold leading-none mb-1">
-                  {p.preco6h}
-                </div>
-                <p className="text-muted text-xs mb-7">
-                  ou {p.preco12h} com 12h/mês
-                </p>
-
-                <div className="h-px bg-(--color-border) mb-7" />
-
-                <ul className="flex-1 space-y-3 mb-7">
-                  {p.features.map((f) => (
-                    <li
-                      key={f}
-                      className={`flex items-start gap-2.5 text-sm leading-snug ${
-                        p.extras.includes(f) ? 'text-accent font-semibold' : 'text-secondary'
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
-                          p.extras.includes(f) ? 'bg-accent' : 'border border-accent/40'
-                        }`}
-                      />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="text-muted text-[0.62rem] font-semibold tracking-[0.12em] uppercase">
-                  {p.prioridade}
-                </p>
-              </div>
+          {/* Accordion */}
+          <div className="flex flex-col gap-px bg-accent/15 mb-8">
+            {planos.map((p, index) => (
+              <PlanAccordion key={p.nome} plano={p} defaultOpen={p.destaque} />
             ))}
           </div>
 
-          <div className="text-center mt-10">
-            <a
-              href="https://wa.me/55"
+          {/* CTA */}
+          <div className="text-center">
+            <a href="https://wa.me/55"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-accent text-bg text-[0.72rem] font-bold tracking-[0.16em] uppercase px-10 py-4 hover:opacity-90 transition-opacity duration-300"
@@ -503,81 +570,14 @@ export default function Home() {
               Quero começar agora
             </a>
           </div>
-        </div>
-      </section>
 
-      {/* ═══════════════════════════════════════════════════════════════════════
-          FAQ
-      ═══════════════════════════════════════════════════════════════════════ */}
-      <section id="faq" className="bg-surface py-24 lg:py-36 px-6 sm:px-10 lg:px-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16">
-
-          {/* Intro */}
-          <div>
-            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-7">
-              <span className="w-6 h-px bg-accent shrink-0" />
-              Dúvidas
-            </p>
-            <h2 className="font-serif text-primary font-semibold leading-tight text-3xl sm:text-4xl lg:text-5xl mb-6">
-              Perguntas<br />
-              <em className="text-accent not-italic">frequentes.</em>
-            </h2>
-            <p className="text-secondary text-sm leading-relaxed">
-              Ainda tem alguma dúvida? Entre em contato pelo WhatsApp — nossa
-              equipe responde na hora.
-            </p>
-          </div>
-
-          {/* Accordion */}
-          <div className="lg:col-span-2">
-            {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-(--color-border)">
-                <button
-                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
-                  className="w-full flex items-center justify-between gap-8 py-6 text-left group"
-                >
-                  <span
-                    className={`text-sm sm:text-base leading-snug transition-colors duration-200 ${
-                      faqOpen === i ? 'text-primary' : 'text-secondary group-hover:text-primary'
-                    }`}
-                  >
-                    {faq.q}
-                  </span>
-                  <span
-                    className={`w-7 h-7 shrink-0 rounded-full border flex items-center justify-center text-accent text-base transition-colors duration-200 ${
-                      faqOpen === i ? 'border-accent bg-accent/10' : 'border-(--color-border)'
-                    }`}
-                  >
-                    {faqOpen === i ? '−' : '+'}
-                  </span>
-                </button>
-
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    faqOpen === i ? 'max-h-60 pb-6' : 'max-h-0'
-                  }`}
-                >
-                  <p className="text-secondary text-sm sm:text-base leading-relaxed">
-                    {faq.a}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           CTA
       ═══════════════════════════════════════════════════════════════════════ */}
-      <section className="bg-primary py-28 lg:py-44 px-6 sm:px-10 lg:px-16 text-center relative overflow-hidden">
-
-        {/* Ornamento de fundo */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <span className="font-serif text-[8rem] sm:text-[14rem] lg:text-[18rem] font-bold text-accent/5 italic whitespace-nowrap">
-            Liber
-          </span>
-        </div>
+      <section className="bg-primary py-10 lg:py-44 px-6 sm:px-10 lg:px-16 text-center relative overflow-hidden">
 
         <div className="absolute top-1/2 left-0 w-20 h-px bg-accent/10 hidden lg:block" />
         <div className="absolute top-1/2 right-0 w-20 h-px bg-accent/10 hidden lg:block" />
@@ -606,7 +606,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="bg-accent text-bg text-[0.72rem] font-bold tracking-[0.16em] uppercase px-10 py-4 hover:opacity-90 transition-opacity duration-300"
             >
-              Falar no WhatsApp
+              Falar com o Especialista
             </a>
             <a
               href="#planos"

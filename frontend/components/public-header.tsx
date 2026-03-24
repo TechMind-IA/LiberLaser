@@ -130,7 +130,7 @@ export default function PublicHeader() {
               rel="noopener noreferrer"
               className="text-center bg-accent text-bg text-xs font-bold tracking-[0.12em] uppercase py-3"
             >
-              Falar no WhatsApp
+              Falar com o Especialista
             </a>
           </div>
         </div>
