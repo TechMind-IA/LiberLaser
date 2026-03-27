@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/auth-context'
 import { DashboardSidebar } from '@/components/dashboard/sidebar'
 import { DashboardHeader } from '@/components/dashboard/header'
 import { Loader2 } from 'lucide-react'
+import '@/styles/dashboard-fonts.css'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -58,8 +59,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         minHeight: '100vh',
         display: 'flex',
         background: '#FFFDF9',
-        fontFamily: "'Jost', sans-serif",
       }}
+      className="dashboard-container"
     >
       <DashboardSidebar
         open={sidebarOpen}

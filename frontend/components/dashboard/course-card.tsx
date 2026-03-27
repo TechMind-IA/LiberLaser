@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, BookOpen, BarChart } from 'lucide-react'
+import { Clock, BookOpen, Play } from 'lucide-react'
 
 interface CourseCardProps {
   id: string
@@ -13,211 +13,102 @@ interface CourseCardProps {
   progress?: number
 }
 
-const levelLabel: Record<string, string> = {
-  iniciante:     'Iniciante',
-  intermediario: 'Intermediário',
-  avancado:      'Avançado',
-}
-
-const levelColor: Record<string, string> = {
-  iniciante:     '#7aab6e',
-  intermediario: '#C9A55A',
-  avancado:      '#b87a4e',
+const levelConfig: Record<string, { label: string; color: string }> = {
+  iniciante:     { label: 'Iniciante',     color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  intermediario: { label: 'Intermediário', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+  avancado:      { label: 'Avançado',      color: 'bg-rose-50 text-rose-700 border-rose-200' },
 }
 
 export function CourseCard({
-  id,
-  title,
-  description,
-  thumbnail,
-  duration,
-  level,
-  instructor,
-  lessonsCount,
-  progress = 0,
+  id, title, description, thumbnail,
+  duration, level, instructor, lessonsCount, progress = 0,
 }: CourseCardProps) {
-  const label = levelLabel[level] ?? level
-  const accent = levelColor[level] ?? '#C9A55A'
+  const cfg = levelConfig[level] ?? { label: level, color: 'bg-surface text-secondary border-accent/20' }
 
   return (
-    <Link href={`/dashboard/cursos/${id}`} style={{ textDecoration: 'none', display: 'block' }}>
+    <Link href={`/dashboard/cursos/${id}`} className="block group" style={{ textDecoration: 'none' }}>
       <article
-        style={{
-          background: '#FFFDF9',
-          border: '1px solid rgba(201,165,90,.15)',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          fontFamily: "'Jost', sans-serif",
-          transition: 'box-shadow .25s, border-color .25s, transform .25s',
-          cursor: 'pointer',
-        }}
-        onMouseEnter={(e) => {
-          const el = e.currentTarget
-          el.style.boxShadow = '0 8px 32px rgba(30,15,5,.1)'
-          el.style.borderColor = 'rgba(201,165,90,.4)'
-          el.style.transform = 'translateY(-2px)'
-        }}
-        onMouseLeave={(e) => {
-          const el = e.currentTarget
-          el.style.boxShadow = 'none'
-          el.style.borderColor = 'rgba(201,165,90,.15)'
-          el.style.transform = 'translateY(0)'
-        }}
+        className="bg-white border border-accent/20 overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/50 hover:shadow-[0_12px_40px_rgba(196,137,106,0.18)]"
+        style={{ transform: 'translateY(0)', transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease' }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-4px)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
       >
         {/* Thumbnail */}
-        <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#F5EDE2' }}>
+        <div className="relative aspect-video overflow-hidden bg-neutral-100">
           <img
             src={thumbnail}
             alt={title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block',
-              transition: 'transform .5s ease',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.04)')}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500"
           />
 
+          {/* Play overlay */}
+          <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 transition-all duration-300 flex items-center justify-center">
+            <div className="w-12 h-12 bg-white/95 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl">
+              <Play size={16} className="text-accent ml-0.5" fill="currentColor" />
+            </div>
+          </div>
+
           {/* Level badge */}
-          <span
-            style={{
-              position: 'absolute',
-              top: 12,
-              left: 12,
-              fontSize: '.58rem',
-              fontWeight: 700,
-              letterSpacing: '.18em',
-              textTransform: 'uppercase',
-              background: accent,
-              color: '#1E0F05',
-              padding: '.25rem .75rem',
-            }}
-          >
-            {label}
+          <span className={`absolute top-3 left-3 text-[0.55rem] font-bold tracking-[0.14em] uppercase px-2.5 py-1.5 border ${cfg.color}`}>
+            {cfg.label}
           </span>
 
-          {/* Progress bar overlay */}
+          {/* Progress bar */}
           {progress > 0 && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: 3,
-                background: 'rgba(30,15,5,.3)',
-              }}
-            >
-              <div
-                style={{
-                  height: '100%',
-                  width: `${progress}%`,
-                  background: '#C9A55A',
-                  transition: 'width .6s ease',
-                }}
-              />
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary/15">
+              <div className="h-full bg-accent transition-all duration-500" style={{ width: `${progress}%` }} />
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div style={{ padding: '1.3rem 1.4rem 1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <div className="p-4 sm:p-5 flex flex-col flex-1 bg-neutral-50">
+          {/* Instructor */}
+          <p className="text-[0.6rem] font-bold tracking-[0.16em] uppercase text-accent mb-2">
+            {instructor}
+          </p>
+
+          {/* Title */}
           <h3
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '1rem',
-              fontWeight: 600,
-              color: '#1E0F05',
-              lineHeight: 1.35,
-              marginBottom: '.5rem',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
+            className="font-serif text-primary font-semibold leading-snug mb-2 text-[0.98rem] flex-1"
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
           >
             {title}
           </h3>
 
+          {/* Description */}
           <p
-            style={{
-              fontSize: '.8rem',
-              fontWeight: 400,
-              color: '#8A6548',
-              lineHeight: 1.65,
-              marginBottom: '1rem',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              flex: 1,
-            }}
+            className="text-secondary/70 text-[0.74rem] leading-relaxed mb-4"
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
           >
             {description}
           </p>
 
-          {/* Meta row */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              paddingTop: '.9rem',
-              borderTop: '1px solid rgba(201,165,90,.12)',
-            }}
-          >
-            {[
-              { icon: Clock,     text: duration },
-              { icon: BookOpen,  text: `${lessonsCount} aulas` },
-            ].map(({ icon: Icon, text }) => (
-              <span
-                key={text}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '.35rem',
-                  fontSize: '.72rem',
-                  fontWeight: 500,
-                  color: 'rgba(138,101,72,.6)',
-                  letterSpacing: '.03em',
-                }}
-              >
-                <Icon size={12} strokeWidth={1.5} />
-                {text}
-              </span>
-            ))}
+          {/* Progress (when > 0) */}
+          {progress > 0 && (
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[0.6rem] font-semibold text-secondary/60 tracking-wide uppercase">Progresso</span>
+                <span className="text-[0.65rem] font-bold text-accent">{progress}%</span>
+              </div>
+              <div className="h-1.5 bg-neutral-200 overflow-hidden">
+                <div className="h-full bg-accent transition-all duration-500" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+          )}
 
-            {progress > 0 && (
-              <span
-                style={{
-                  marginLeft: 'auto',
-                  fontSize: '.68rem',
-                  fontWeight: 600,
-                  letterSpacing: '.1em',
-                  color: '#C9A55A',
-                }}
-              >
-                {progress}%
-              </span>
-            )}
+          {/* Meta */}
+          <div className="flex items-center gap-3 pt-3 border-t border-neutral-200">
+            <span className="flex items-center gap-1.5 text-[0.63rem] text-secondary/60 font-medium">
+              <Clock size={10} strokeWidth={1.5} className="text-accent" />
+              {duration}
+            </span>
+            <span className="w-px h-3 bg-neutral-300" />
+            <span className="flex items-center gap-1.5 text-[0.63rem] text-secondary/60 font-medium">
+              <BookOpen size={10} strokeWidth={1.5} className="text-accent" />
+              {lessonsCount} {lessonsCount === 1 ? 'aula' : 'aulas'}
+            </span>
           </div>
-
-          {/* Instructor */}
-          <p
-            style={{
-              marginTop: '.7rem',
-              fontSize: '.7rem',
-              fontWeight: 400,
-              color: 'rgba(138,101,72,.5)',
-              letterSpacing: '.03em',
-            }}
-          >
-            Por{' '}
-            <span style={{ fontWeight: 600, color: '#8A6548' }}>{instructor}</span>
-          </p>
         </div>
       </article>
     </Link>

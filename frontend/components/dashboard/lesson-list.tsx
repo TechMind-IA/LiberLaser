@@ -43,15 +43,11 @@ export function LessonList({ modules, currentLessonId, onSelectLesson }: LessonL
 
   return (
     <div className="bg-card rounded-lg border border-border overflow-hidden">
-      <div className="p-4 border-b border-border">
-        <h3 className="font-semibold text-card-foreground">Conteúdo do Curso</h3>
-      </div>
-      
       <div className="divide-y divide-border max-h-[calc(100vh-300px)] overflow-y-auto">
         {modules.map((module, moduleIndex) => {
           const isExpanded = expandedModules.includes(module.id)
           const progress = getModuleProgress(module)
-          
+
           return (
             <div key={module.id}>
               {/* Module Header */}

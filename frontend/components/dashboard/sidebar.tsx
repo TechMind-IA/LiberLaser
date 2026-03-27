@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/contexts/auth-context'
 import { cn } from '@/lib/utils'
-import { Home, BookOpen, Award, User, Settings, LogOut, X } from 'lucide-react'
+import { LayoutGrid, BookOpen, User, Settings, LogOut, X } from 'lucide-react'
 
 interface DashboardSidebarProps {
   open: boolean
@@ -12,11 +12,10 @@ interface DashboardSidebarProps {
 }
 
 const menuItems = [
-  { icon: Home,     label: 'Início',        href: '/dashboard' },
-  { icon: BookOpen, label: 'Meus Cursos',   href: '/dashboard/cursos' },
-  { icon: Award,    label: 'Certificados',  href: '/dashboard/certificados' },
-  { icon: User,     label: 'Perfil',        href: '/dashboard/perfil' },
-  { icon: Settings, label: 'Configurações', href: '/dashboard/configuracoes' },
+  { icon: LayoutGrid, label: 'Início',        href: '/dashboard' },
+  { icon: BookOpen,   label: 'Meus Cursos',   href: '/dashboard/cursos' },
+  { icon: User,       label: 'Perfil',        href: '/dashboard/perfil' },
+  { icon: Settings,   label: 'Configurações', href: '/dashboard/configuracoes' },
 ]
 
 export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
@@ -31,163 +30,54 @@ export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
       {open && (
         <div
           onClick={onClose}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(30,15,5,.55)',
-            zIndex: 40,
-            backdropFilter: 'blur(2px)',
-          }}
-          className="lg:hidden"
+          className="fixed inset-0 bg-primary/60 z-40 lg:hidden backdrop-blur-sm"
         />
       )}
 
-      {/* Sidebar */}
       <aside
-        style={{
-          width: 272,
-          background: '#1E0F05',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          position: 'sticky',
-          top: 0,
-          flexShrink: 0,
-          borderRight: '1px solid rgba(201,165,90,.12)',
-          fontFamily: "'Jost', sans-serif",
-          zIndex: 50,
-          transition: 'transform .3s ease',
-        }}
         className={cn(
-          'fixed lg:relative',
+          'fixed lg:relative w-[260px] bg-primary flex flex-col h-screen',
+          'border-r border-accent/10 z-50 transition-transform duration-300',
           open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
+        style={{ fontFamily: "'Outfit', sans-serif" }}
       >
-        {/* Header / Logo */}
-        <div
-          style={{
-            padding: '2rem 1.8rem 1.8rem',
-            borderBottom: '1px solid rgba(201,165,90,.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-            <span
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '1.15rem',
-                fontWeight: 600,
-                color: '#FFFDF9',
-                letterSpacing: '.01em',
-              }}
-            >
-              Liber{' '}
-              <em style={{ color: '#C9A55A', fontStyle: 'italic', fontWeight: 400 }}>
-                Laser
-              </em>
-            </span>
+        {/* Logo */}
+        <div className="px-5 py-4 border-b border-accent/8 flex items-center justify-between">
+          <Link href="/dashboard" className="block">
+            <img
+              src="/logo.png"
+              alt="Liber Laser Academy"
+              className="h-12 w-auto object-contain"
+            />
           </Link>
           <button
             onClick={onClose}
-            className="lg:hidden"
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'rgba(245,240,232,.4)',
-              display: 'flex',
-              padding: 4,
-              transition: 'color .2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A55A')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(245,240,232,.4)')}
+            className="lg:hidden text-bg/30 hover:text-accent transition-colors p-1"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        {/* User info */}
-        <div
-          style={{
-            padding: '1.4rem 1.8rem',
-            borderBottom: '1px solid rgba(201,165,90,.1)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-          }}
-        >
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              flexShrink: 0,
-              border: '1.5px solid rgba(201,165,90,.4)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '.95rem',
-                fontWeight: 600,
-                color: '#C9A55A',
-              }}
-            >
-              {initial}
-            </span>
+        {/* User */}
+        <div className="px-5 py-3.5 border-b border-accent/8 flex items-center gap-3">
+          <div className="w-8 h-8 border border-accent/40 flex items-center justify-center shrink-0">
+            <span className="font-serif text-accent text-sm font-semibold">{initial}</span>
           </div>
-          <div style={{ overflow: 'hidden' }}>
-            <p
-              style={{
-                fontSize: '.82rem',
-                fontWeight: 600,
-                color: '#FFFDF9',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {user?.name ?? 'Usuária'}
-            </p>
-            <p
-              style={{
-                fontSize: '.7rem',
-                fontWeight: 400,
-                color: 'rgba(245,240,232,.35)',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                marginTop: 2,
-                letterSpacing: '.03em',
-              }}
-            >
-              {user?.email ?? ''}
-            </p>
+          <div className="min-w-0">
+            <p className="text-bg text-[0.78rem] font-semibold truncate">{user?.name ?? 'Usuária'}</p>
+            <p className="text-bg/30 text-[0.65rem] truncate mt-0.5">{user?.email ?? ''}</p>
           </div>
         </div>
 
         {/* Nav label */}
-        <div style={{ padding: '1.4rem 1.8rem .6rem' }}>
-          <span
-            style={{
-              fontSize: '.58rem',
-              fontWeight: 600,
-              letterSpacing: '.22em',
-              textTransform: 'uppercase',
-              color: 'rgba(201,165,90,.45)',
-            }}
-          >
-            Menu
-          </span>
-        </div>
+        <p className="px-5 pt-4 pb-1 text-[0.55rem] font-bold tracking-[0.22em] uppercase text-accent/40">
+          Menu
+        </p>
 
         {/* Navigation */}
-        <nav style={{ flex: 1, padding: '0 .9rem', overflowY: 'auto' }}>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <nav className="flex-1 px-3 pb-2 overflow-y-auto">
+          <ul className="flex flex-col gap-0.5">
             {menuItems.map((item) => {
               const isActive =
                 pathname === item.href ||
@@ -198,34 +88,15 @@ export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '.85rem',
-                      padding: '.75rem 1rem',
-                      textDecoration: 'none',
-                      fontSize: '.82rem',
-                      fontWeight: isActive ? 600 : 400,
-                      letterSpacing: '.04em',
-                      color: isActive ? '#C9A55A' : 'rgba(245,240,232,.5)',
-                      background: isActive ? 'rgba(201,165,90,.08)' : 'transparent',
-                      borderLeft: isActive ? '2px solid #C9A55A' : '2px solid transparent',
-                      transition: 'all .2s',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.color = 'rgba(245,240,232,.85)'
-                        e.currentTarget.style.background = 'rgba(201,165,90,.04)'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.color = 'rgba(245,240,232,.5)'
-                        e.currentTarget.style.background = 'transparent'
-                      }
-                    }}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2.5 text-[0.78rem] transition-all duration-150',
+                      'border-l-2',
+                      isActive
+                        ? 'text-accent font-semibold border-l-accent bg-accent/8'
+                        : 'text-bg/45 font-normal border-l-transparent hover:text-bg/80 hover:bg-accent/4'
+                    )}
                   >
-                    <item.icon size={15} strokeWidth={isActive ? 2 : 1.5} />
+                    <item.icon size={14} strokeWidth={isActive ? 2 : 1.5} className="shrink-0" />
                     {item.label}
                   </Link>
                 </li>
@@ -234,40 +105,17 @@ export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
           </ul>
         </nav>
 
-        {/* Divider ornamental */}
-        <div style={{ margin: '0 1.8rem', height: '1px', background: 'rgba(201,165,90,.1)' }} />
+        {/* Divider */}
+        <div className="mx-5 h-px bg-accent/8" />
 
         {/* Logout */}
-        <div style={{ padding: '1.2rem .9rem 1.8rem' }}>
+        <div className="px-3 py-4">
           <button
             onClick={() => { logout(); window.location.href = '/' }}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '.85rem',
-              padding: '.75rem 1rem',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '.82rem',
-              fontWeight: 400,
-              letterSpacing: '.04em',
-              color: 'rgba(245,240,232,.3)',
-              borderLeft: '2px solid transparent',
-              fontFamily: "'Jost', sans-serif",
-              transition: 'all .2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#e05c4a'
-              e.currentTarget.style.background = 'rgba(224,92,74,.06)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'rgba(245,240,232,.3)'
-              e.currentTarget.style.background = 'transparent'
-            }}
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-[0.75rem] text-bg/25 hover:text-red-400 transition-colors border-l-2 border-l-transparent"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            <LogOut size={15} strokeWidth={1.5} />
+            <LogOut size={14} strokeWidth={1.5} className="shrink-0" />
             Sair da conta
           </button>
         </div>
