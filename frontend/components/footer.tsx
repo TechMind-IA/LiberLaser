@@ -10,7 +10,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-primary px-6 sm:px-10 lg:px-16 pt-14 sm:pt-16 lg:pt-20 pb-8">
+    <footer className="bg-bg px-6 sm:px-10 lg:px-16 pt-4 sm:pt-16 lg:pt-20 pb-8">
       <div className="max-w-7xl mx-auto">
 
         {/* Grid principal */}
@@ -23,20 +23,14 @@ export default function Footer() {
               alt="Liber Laser Academy"
               className="h-20 w-auto object-contain mb-5"
             />
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-4 h-px bg-accent/50 shrink-0" />
-              <p className="text-accent/60 text-[0.6rem] font-bold tracking-[0.24em] uppercase">
-                Locação · Educação · Tecnologia
-              </p>
-            </div>
-            <p className="text-bg/60 text-xs leading-relaxed mb-5">
+            <p className="text-primary/60 text-xs leading-relaxed">
               Transformando tecnologia laser em faturamento real para clínicas e profissionais de estética.
             </p>
           </div>
 
           {/* Navegação */}
           <div>
-            <h4 className="text-bg/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
+            <h4 className="text-primary/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
               Navegação
             </h4>
             <ul className="flex flex-col gap-3">
@@ -44,7 +38,7 @@ export default function Footer() {
                 <li key={item.label}>
 
                   <a href={item.href}
-                    className="group flex items-center gap-2 text-bg/50 text-sm hover:text-accent transition-colors duration-200"
+                    className="group flex items-center gap-2 text-primary/50 text-sm hover:text-accent transition-colors duration-200"
                   >
                     <span className="w-3 h-px bg-accent/30 shrink-0 group-hover:w-4 group-hover:bg-accent transition-all duration-200" />
                     {item.label}
@@ -56,20 +50,20 @@ export default function Footer() {
 
           {/* Contato */}
           <div>
-            <h4 className="text-bg/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
+            <h4 className="text-primary/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
               Contato
             </h4>
             <div className="flex flex-col">
               <div className="flex items-center gap-2.5">
                 <span className="text-accent/60 text-[2rem]">✉</span>
-                <a href="mailto:contato@liberlaser.com.br" className="text-bg/60 text-ls leading-relaxed hover:text-accent transition-colors duration-200">
+                <a href="mailto:contato@liberlaser.com.br" className="text-primary/60 text-ls leading-relaxed hover:text-accent transition-colors duration-200">
                   liberlaser20@gmail.com
                 </a>
               </div>
             </div>
 
             {/* Redes sociais */}
-            <div className="flex gap-3 py-6">
+            <div className="flex gap-3 py-1">
               {[
                 {
                   href: 'https://instagram.com',
@@ -93,7 +87,6 @@ export default function Footer() {
                   ),
                 },
               ].map((s) => (
-                
                 <a key={s.label}
                   href={s.href}
                   target="_blank"
@@ -109,11 +102,11 @@ export default function Footer() {
 
           {/* Mapa */}
           <div>
-            <h4 className="text-bg/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
+            <h4 className="text-primary/60 text-[0.7rem] font-bold tracking-[0.24em] uppercase mb-5">
               Localização
             </h4>
             <div className="border border-accent/15 overflow-hidden relative">
-              <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-gradient-to-b from-primary/70 to-transparent pointer-events-none">
+              <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-gradient-to-b from-bg/70 to-transparent pointer-events-none">
                 <span className="text-accent/70 text-[0.55rem] font-bold tracking-[0.18em] uppercase">
                   Liber Laser Academy
                 </span>
@@ -133,11 +126,11 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-bg/8 mb-6" />
+        <div className="h-px bg-primary/8 mb-2" />
 
         {/* Bottom */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-bg/25 text-[0.65rem] tracking-wide">
+          <p className="text-primary/25 text-[0.65rem] tracking-wide">
             © {year} Liber Laser Academy. Todos os direitos reservados.
           </p>
         </div>

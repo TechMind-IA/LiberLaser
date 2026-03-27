@@ -18,198 +18,79 @@ export default function DashboardPage() {
   )
 
   const stats = [
-    { icon: BookOpen,    label: 'Cursos disponíveis', value: String(courses.length) },
-    { icon: Clock,       label: 'Horas de conteúdo',  value: `${courses.length * 8}h` },
-    { icon: Award,       label: 'Certificados',        value: '0' },
-    { icon: TrendingUp,  label: 'Total de aulas',      value: String(totalLessons) },
+    { icon: BookOpen,   label: 'Cursos disponíveis', value: String(courses.length) },
+    { icon: Clock,      label: 'Horas de conteúdo',  value: `${courses.length * 8}h` },
+    { icon: TrendingUp, label: 'Total de aulas',      value: String(totalLessons) },
+    { icon: Award,      label: 'Certificados',        value: '0' },
   ]
 
   const firstName = user?.name?.split(' ')[0] ?? 'bem-vinda'
 
   return (
-    <div
-      style={{
-        padding: '2.5rem 2.5rem 4rem',
-        fontFamily: "'Jost', sans-serif",
-        maxWidth: 1200,
-      }}
-    >
-      {/* ── Welcome ── */}
-      <div style={{ marginBottom: '2.8rem' }}>
-        <p
-          style={{
-            fontSize: '.65rem',
-            fontWeight: 600,
-            letterSpacing: '.25em',
-            textTransform: 'uppercase',
-            color: '#C9A55A',
-            marginBottom: '.6rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '.6rem',
-          }}
-        >
-          <span style={{ display: 'block', width: 18, height: 1.5, background: '#C9A55A', flexShrink: 0 }} />
+    <div className="px-5 sm:px-7 py-8 pb-16 max-w-7xl" style={{ fontFamily: "'Outfit', sans-serif" }}>
+
+      {/* Welcome */}
+      <div className="mb-7">
+        <p className="flex items-center gap-2 text-accent text-[0.6rem] font-bold tracking-[0.25em] uppercase mb-2">
+          <span className="w-4 h-px bg-accent" />
           Painel
         </p>
-        <h1
-          style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 'clamp(1.7rem, 3vw, 2.4rem)',
-            fontWeight: 600,
-            lineHeight: 1.15,
-            color: '#1E0F05',
-          }}
-        >
-          Olá, {firstName}.
-          <br />
-          <em style={{ fontStyle: 'italic', fontWeight: 400, color: '#C9A55A' }}>
-            Continue evoluindo.
-          </em>
+        <h1 className="font-serif text-primary font-semibold leading-tight text-2xl sm:text-3xl">
+          Olá, {firstName}.<br />
+          <em className="font-normal not-italic text-accent">Continue evoluindo.</em>
         </h1>
       </div>
 
-      {/* ── Stats ── */}
+      {/* Stats */}
       <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 2,
-          background: 'rgba(201,165,90,.1)',
-          marginBottom: '3rem',
-        }}
-        className="stats-grid"
+        className="grid grid-cols-2 sm:grid-cols-4 mb-8"
+        style={{ gap: '2px', background: 'rgba(196,137,106,0.1)' }}
       >
         {stats.map((stat) => (
           <div
             key={stat.label}
-            style={{
-              background: '#FFFDF9',
-              padding: '1.6rem 1.8rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '.9rem',
-              transition: 'background .2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = '#F5EDE2')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFDF9')}
+            className="bg-bg px-4 py-4 sm:px-5 sm:py-5 hover:bg-surface transition-colors duration-200"
           >
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                border: '1.5px solid rgba(201,165,90,.3)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#C9A55A',
-              }}
-            >
-              <stat.icon size={16} strokeWidth={1.5} />
+            <div className="w-8 h-8 border border-accent/30 flex items-center justify-center text-accent mb-3">
+              <stat.icon size={14} strokeWidth={1.5} />
             </div>
-            <div>
-              <p
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: '1.7rem',
-                  fontWeight: 600,
-                  color: '#1E0F05',
-                  lineHeight: 1,
-                  marginBottom: '.3rem',
-                }}
-              >
-                {stat.value}
-              </p>
-              <p
-                style={{
-                  fontSize: '.7rem',
-                  fontWeight: 500,
-                  letterSpacing: '.08em',
-                  color: 'rgba(138,101,72,.6)',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {stat.label}
-              </p>
-            </div>
+            <p className="font-serif text-primary text-2xl font-semibold leading-none mb-1">
+              {stat.value}
+            </p>
+            <p className="text-secondary/50 text-[0.6rem] font-semibold tracking-[0.08em] uppercase">
+              {stat.label}
+            </p>
           </div>
         ))}
       </div>
 
-      {/* ── Courses ── */}
+      {/* Courses */}
       {isLoading ? (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6rem 0', gap: '.8rem', color: '#8A6548' }}>
-          <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} />
-          <span style={{ fontSize: '.85rem', letterSpacing: '.06em' }}>Carregando cursos...</span>
+        <div className="flex items-center justify-center py-16 gap-3 text-secondary/50">
+          <Loader2 size={18} className="animate-spin text-accent" />
+          <span className="text-[0.82rem] tracking-wide">Carregando cursos...</span>
         </div>
       ) : courses.length > 0 ? (
         <section>
-          {/* Section header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              marginBottom: '1.8rem',
-            }}
-          >
+          <div className="flex items-end justify-between mb-5">
             <div>
-              <p
-                style={{
-                  fontSize: '.62rem',
-                  fontWeight: 600,
-                  letterSpacing: '.22em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(201,165,90,.6)',
-                  marginBottom: '.4rem',
-                }}
-              >
+              <p className="text-accent/50 text-[0.58rem] font-bold tracking-[0.2em] uppercase mb-1">
                 Catálogo
               </p>
-              <h2
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: '1.35rem',
-                  fontWeight: 600,
-                  color: '#1E0F05',
-                }}
-              >
+              <h2 className="font-serif text-primary text-lg sm:text-xl font-semibold">
                 Todos os cursos
               </h2>
             </div>
-
             <Link
               href="/dashboard/cursos"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '.5rem',
-                fontSize: '.7rem',
-                fontWeight: 600,
-                letterSpacing: '.12em',
-                textTransform: 'uppercase',
-                color: '#C9A55A',
-                textDecoration: 'none',
-                borderBottom: '1px solid rgba(201,165,90,.3)',
-                paddingBottom: 2,
-                transition: 'border-color .2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = '#C9A55A')}
-              onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'rgba(201,165,90,.3)')}
+              className="flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.12em] uppercase text-accent border-b border-accent/30 pb-0.5 hover:border-accent transition-colors duration-200"
             >
               Ver todos
-              <ArrowRight size={12} />
+              <ArrowRight size={11} />
             </Link>
           </div>
 
-          {/* Grid */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-              gap: '1.5rem',
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {courses.map((course) => {
               const lessonsCount =
                 course.modules?.reduce((acc, mod) => acc + (mod.lessons?.length ?? 0), 0) ?? 0
@@ -232,36 +113,12 @@ export default function DashboardPage() {
           </div>
         </section>
       ) : (
-        <div
-          style={{
-            padding: '5rem 2rem',
-            textAlign: 'center',
-            border: '1px solid rgba(201,165,90,.15)',
-            background: '#F5EDE2',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '1.1rem',
-              fontStyle: 'italic',
-              color: '#8A6548',
-            }}
-          >
+        <div className="py-16 text-center border border-accent/10 bg-surface">
+          <p className="font-serif text-secondary italic text-base">
             Nenhum curso disponível no momento.
           </p>
         </div>
       )}
-
-      <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 900px) {
-          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-        }
-        @media (max-width: 480px) {
-          .stats-grid { grid-template-columns: 1fr 1fr !important; }
-        }
-      `}</style>
     </div>
   )
 }

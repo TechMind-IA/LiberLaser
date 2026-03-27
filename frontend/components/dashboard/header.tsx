@@ -9,129 +9,33 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   return (
     <header
-      style={{
-        height: 64,
-        borderBottom: '1px solid rgba(201,165,90,.12)',
-        background: 'rgba(255,253,249,.97)',
-        backdropFilter: 'blur(10px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 2rem',
-        position: 'sticky',
-        top: 0,
-        zIndex: 30,
-        fontFamily: "'Jost', sans-serif",
-        gap: '1.5rem',
-      }}
+      className="h-[60px] border-b border-accent/12 bg-bg/97 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between px-5 sm:px-7 gap-4"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
     >
-      {/* Mobile menu button */}
+      {/* Mobile menu */}
       <button
         onClick={onMenuClick}
-        className="lg:hidden"
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: '#8A6548',
-          display: 'flex',
-          alignItems: 'center',
-          padding: 4,
-          flexShrink: 0,
-          transition: 'color .2s',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A55A')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = '#8A6548')}
+        className="lg:hidden text-secondary hover:text-accent transition-colors p-1 shrink-0"
       >
-        <Menu size={20} />
+        <Menu size={18} />
       </button>
 
       {/* Search */}
-      <div
-        style={{
-          flex: 1,
-          maxWidth: 400,
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Search
-          size={14}
-          style={{
-            position: 'absolute',
-            left: '1rem',
-            color: 'rgba(138,101,72,.45)',
-            pointerEvents: 'none',
-          }}
-        />
+      <div className="flex-1 max-w-sm relative flex items-center">
+        <Search size={13} className="absolute left-3.5 text-secondary/40 pointer-events-none" />
         <input
           type="search"
           placeholder="Buscar cursos..."
-          style={{
-            width: '100%',
-            height: 38,
-            paddingLeft: '2.5rem',
-            paddingRight: '1rem',
-            background: '#F5EDE2',
-            border: '1px solid transparent',
-            borderBottom: '1.5px solid rgba(201,165,90,.2)',
-            outline: 'none',
-            fontFamily: "'Jost', sans-serif",
-            fontSize: '.82rem',
-            fontWeight: 400,
-            color: '#1E0F05',
-            transition: 'border-color .2s, background .2s',
-          }}
-          onFocus={(e) => {
-            e.currentTarget.style.borderBottomColor = '#C9A55A'
-            e.currentTarget.style.background = '#EDE0D0'
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.borderBottomColor = 'rgba(201,165,90,.2)'
-            e.currentTarget.style.background = '#F5EDE2'
-          }}
+          className="w-full h-9 pl-9 pr-4 bg-surface border-b border-accent/20 outline-none text-[0.82rem] text-primary placeholder:text-secondary/35 focus:border-accent transition-colors duration-200"
+          style={{ fontFamily: "'Outfit', sans-serif", borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
         />
       </div>
 
       {/* Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', flexShrink: 0 }}>
-        <button
-          style={{
-            position: 'relative',
-            width: 38,
-            height: 38,
-            background: 'none',
-            border: '1px solid rgba(201,165,90,.15)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#8A6548',
-            transition: 'all .2s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = 'rgba(201,165,90,.4)'
-            e.currentTarget.style.color = '#C9A55A'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = 'rgba(201,165,90,.15)'
-            e.currentTarget.style.color = '#8A6548'
-          }}
-        >
-          <Bell size={15} strokeWidth={1.5} />
-          {/* Notification dot */}
-          <span
-            style={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              width: 5,
-              height: 5,
-              background: '#C9A55A',
-              borderRadius: '50%',
-            }}
-          />
+      <div className="flex items-center gap-2 shrink-0">
+        <button className="relative w-9 h-9 border border-accent/15 flex items-center justify-center text-secondary hover:border-accent/40 hover:text-accent transition-all duration-200">
+          <Bell size={14} strokeWidth={1.5} />
+          <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-accent rounded-full" />
         </button>
       </div>
     </header>

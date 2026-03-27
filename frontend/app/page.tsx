@@ -219,11 +219,6 @@ export default function Home() {
 
           {/* Texto */}
           <div>
-            <p className="flex items-center gap-3 text-accent text-[0.7rem] font-semibold tracking-[0.28em] uppercase mb-8">
-              <span className="w-8 h-px bg-accent shrink-0" />
-              Locação · Educação · Tecnologia
-            </p>
-
             <h1 className="font-serif text-primary font-semibold leading-[1.05] text-4xl sm:text-5xl lg:text-6xl xl:text-[4.5rem] mb-7">
               Tecnologia laser<br />
               a serviço do seu<br />
