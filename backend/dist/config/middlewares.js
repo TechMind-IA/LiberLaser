@@ -26,6 +26,8 @@ exports.default = [
                 'http://localhost:3000',
                 'http://localhost:3001',
                 'https://liber-laser.vercel.app',
+                'https://liberlaseracademy.com.br',
+                'https://www.liberlaseracademy.com.br',
             ],
             methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
             credentials: true,
